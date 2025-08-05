@@ -179,7 +179,6 @@ npm test
 - **Market**: `/api/market/overview`
 - **Stocks**: `/api/stocks/watchlist`, `/api/stocks/top-movers`
 - **News**: `/api/news/market`
-- **AI**: `/api/ai/recommendations`
 
 ## 🚀 Performance Optimizations
 

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { userAPI, marketAPI, stocksAPI, newsAPI, aiAPI } from '../services/api';
+import { userAPI, marketAPI, stocksAPI, newsAPI } from '../services/api';
 import { clearAuthData, getUserEmail } from '../utils/auth';
 import { 
   User, 
   MarketData, 
   Stock, 
   NewsArticle, 
-  Recommendation 
 } from '../types';
 import './Dashboard.css';
 
@@ -19,7 +18,6 @@ const DashboardPage: React.FC = () => {
   const [watchlist, setWatchlist] = useState<Stock[]>([]);
   const [topMovers, setTopMovers] = useState<Stock[]>([]);
   const [news, setNews] = useState<NewsArticle[]>([]);
-  const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const [activeTab, setActiveTab] = useState<TabType>('overview');
@@ -61,23 +59,19 @@ const DashboardPage: React.FC = () => {
         watchlistResponse,
         topMoversResponse,
         newsResponse,
-        recommendationsResponse
       ] = await Promise.all([
         userAPI.getProfile(),
         marketAPI.getOverview(),
         stocksAPI.getWatchlist(),
         stocksAPI.getTopMovers(),
         newsAPI.getMarketNews(),
-        aiAPI.getRecommendations()
       ]);
 
       setUser(userResponse);
       setMarketData(marketResponse);
       setWatchlist(watchlistResponse.stocks || []);
       setTopMovers(topMoversResponse.stocks || []);
-      setNews(newsResponse.articles || []);
-      setRecommendations(recommendationsResponse.recommendations || []);
-      
+      setNews(newsResponse.articles || []);      
     } catch (error) {
       console.error('Dashboard data loading error:', error);
       setError('Failed to load dashboard data. Please refresh the page.');
@@ -416,27 +410,6 @@ const DashboardPage: React.FC = () => {
             </section>
 
             <div className="dashboard-grid">
-              {/* AI Recommendations */}
-              <section className="dashboard-section">
-                <h2>AI Recommendations</h2>
-                <div className="recommendations-list">
-                  {recommendations.map((rec, i) => (
-                    <div key={i} className="recommendation-item">
-                      <div className="rec-header">
-                        <strong>{rec.symbol}</strong>
-                        <span className={`rec-type ${rec.type.toLowerCase()}`}>
-                          {rec.type}
-                        </span>
-                      </div>
-                      <p>{rec.reason}</p>
-                      <div className="rec-details">
-                        <span>Target: ${rec.target}</span>
-                        <span>Confidence: {rec.confidence}%</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
 
               {/* Market News */}
               <section className="dashboard-section">
@@ -789,28 +762,6 @@ const DashboardPage: React.FC = () => {
                     <div className="change positive">+2.1%</div>
                   </div>
                 </div>
-              </div>
-            </section>
-
-            {/* AI Recommendations */}
-            <section className="dashboard-section">
-              <h2>AI Stock Recommendations</h2>
-              <div className="recommendations-list">
-                {recommendations.map((rec, i) => (
-                  <div key={i} className="recommendation-item">
-                    <div className="rec-header">
-                      <strong>{rec.symbol}</strong>
-                      <span className={`rec-type ${rec.type.toLowerCase()}`}>
-                        {rec.type}
-                      </span>
-                    </div>
-                    <p>{rec.reason}</p>
-                    <div className="rec-details">
-                      <span>Target: ${rec.target}</span>
-                      <span>Confidence: {rec.confidence}%</span>
-                    </div>
-                  </div>
-                ))}
               </div>
             </section>
           </>

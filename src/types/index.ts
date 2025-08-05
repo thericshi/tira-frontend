@@ -67,21 +67,6 @@ export interface NewsResponse {
   articles: NewsArticle[];
 }
 
-// AI Recommendation Types
-export type RecommendationType = 'BUY' | 'SELL' | 'HOLD';
-
-export interface Recommendation {
-  symbol: string;
-  type: RecommendationType;
-  reason: string;
-  target: number;
-  confidence: number;
-}
-
-export interface RecommendationsResponse {
-  recommendations: Recommendation[];
-}
-
 // Settings Types
 export interface EmailNotifications {
   buySignals: boolean;

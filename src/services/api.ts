@@ -7,7 +7,6 @@ import {
   WatchlistResponse,
   TopMoversResponse,
   NewsResponse,
-  RecommendationsResponse,
   UserSettings,
   AuthResponse
 } from '../types';
@@ -140,21 +139,12 @@ export const stocksAPI = {
         apiCall('/stocks/watchlist/reorder', {
             method: 'PUT',
             body: JSON.stringify({ symbols })
-        }),
-    getStocksBySector: (sector: string): Promise<WatchlistResponse> => 
-        apiCall<WatchlistResponse>(`/stocks/by-sector?sector=${encodeURIComponent(sector)}`),
-    getStocksByMarketCap: (marketCap: string): Promise<WatchlistResponse> => 
-        apiCall<WatchlistResponse>(`/stocks/by-market-cap?market_cap=${encodeURIComponent(marketCap)}`),
+        })
 };
 
 // News API
 export const newsAPI = {
     getMarketNews: (): Promise<NewsResponse> => apiCall<NewsResponse>('/news/market'),
-};
-
-// AI API
-export const aiAPI = {
-    getRecommendations: (): Promise<RecommendationsResponse> => apiCall<RecommendationsResponse>('/ai/recommendations'),
 };
 
 // Admin API
