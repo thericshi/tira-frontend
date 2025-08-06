@@ -76,19 +76,10 @@ const SignupPage: React.FC = () => {
     }
 
     try {
-      // Extract signup data (excluding confirmPassword, newsletter, terms)
-      const signupData: SignupData = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        password: formData.password,
-        company: formData.company,
-        tradingExperience: formData.tradingExperience
-      };
+      const { terms, ...signupData } = formData;
 
       const response = await authAPI.signup(signupData);
-      const data = await response.json();
-
+      
       if (response.ok) {
         setSuccess('Account created successfully! Redirecting to login...');
         
@@ -96,8 +87,15 @@ const SignupPage: React.FC = () => {
           navigate(`/login?email=${encodeURIComponent(formData.email)}`);
         }, 2000);
       } else {
-        setError(data.message || 'Registration failed. Please try again.');
+        if (response.status === 409) {
+          const data = await response.json();
+          setError(data.detail || 'This email is already registered. Please try logging in.');
+        } else {
+          const data = await response.json();
+          setError(data.detail || data.message || 'Registration failed. Please try again.');
+        }
       }
+      
     } catch (error) {
       console.error('Signup error:', error);
       setError('Connection error. Please try again.');
