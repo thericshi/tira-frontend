@@ -38,15 +38,14 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
   }
 
   return (
-    <>
+    <div className="settings-container">
       {message && (
-        <div className={`settings-message ${messageType}`}>
+        <div className={`message ${messageType}`}>
           {message}
         </div>
       )}
 
-      {/* Email Notifications Section */}
-      <section className="dashboard-section">
+      <section className="settings-section">
         <h2>📧 Email Notifications</h2>
         <p className="section-description">
           Manage your notification preferences for trading signals and market updates.
@@ -55,12 +54,12 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
           {Object.keys(settings.emailNotifications).map((key) => {
             const typedKey = key as keyof EmailNotifications;
             const labels: Record<keyof EmailNotifications, { title: string; desc: string }> = {
-              buySignals: { title: '🟢 Buy Signals', desc: 'Alerts when stocks show strong buy indicators' },
-              sellSignals: { title: '🔴 Sell Signals', desc: 'Alerts when stocks show strong sell indicators' },
+              buySignals: { title: '🟢 Buy Signals', desc: 'Alerts for strong buy indicators' },
+              sellSignals: { title: '🔴 Sell Signals', desc: 'Alerts for strong sell indicators' },
               holdSignals: { title: '🟡 Hold Signals', desc: 'Notifications for hold recommendations' },
-              priceAlerts: { title: '📊 Price Alerts', desc: 'Notified of significant price movements' },
+              priceAlerts: { title: '📊 Price Alerts', desc: 'Notified of significant price moves' },
               dailyDigest: { title: '📈 Daily Digest', desc: 'Daily summary of market activity' },
-              weeklyReport: { title: '📋 Weekly Report', desc: 'Weekly market analysis and performance report' },
+              weeklyReport: { title: '📋 Weekly Report', desc: 'Weekly performance report' },
             };
             return (
               <div className="notification-item" key={key}>
@@ -82,8 +81,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
         </div>
       </section>
 
-      {/* Notification Preferences Section */}
-      <section className="dashboard-section">
+      <section className="settings-section">
         <h2>⚙️ Notification Preferences</h2>
         <div className="preference-item">
             <label htmlFor="notificationFrequency"><strong>Notification Frequency</strong></label>
@@ -113,38 +111,9 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
             />
             <small>Minimum percentage change to trigger price alerts</small>
         </div>
-        <div className="preference-item">
-            <div className="checkbox-item">
-                <label>
-                    <input
-                        type="checkbox"
-                        name="watchlistNotifications"
-                        checked={settings.watchlistNotifications}
-                        onChange={handleSettingChange}
-                    />
-                    <strong>Watchlist Only</strong>
-                </label>
-                <p>Only receive notifications for stocks in your watchlist</p>
-            </div>
-        </div>
-        <div className="preference-item">
-            <div className="checkbox-item">
-                <label>
-                    <input
-                        type="checkbox"
-                        name="marketHoursOnly"
-                        checked={settings.marketHoursOnly}
-                        onChange={handleSettingChange}
-                    />
-                    <strong>Market Hours Only</strong>
-                </label>
-                <p>Only send notifications during market hours (9:30 AM - 4:00 PM ET)</p>
-            </div>
-        </div>
       </section>
 
-      {/* Display Preferences Section */}
-      <section className="dashboard-section">
+      <section className="settings-section">
         <h2>🎨 Display Preferences</h2>
         <div className="preference-item">
           <label><strong>Theme</strong></label>
@@ -160,12 +129,8 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
         </div>
       </section>
 
-      {/* Account Actions Section */}
-      <section className="dashboard-section">
+      <section className="settings-section">
         <h2>Account Management</h2>
-        <p className="section-description">
-          Manage your account settings and data.
-        </p>
         <div className="settings-actions">
           <button
             className="btn btn-primary"
@@ -184,7 +149,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
           </button>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

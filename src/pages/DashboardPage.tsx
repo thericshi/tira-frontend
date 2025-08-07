@@ -223,61 +223,50 @@ const DashboardPage: React.FC = () => {
     return watchlist.some(stock => stock.symbol === symbol);
   };
 
-  // --- START: Restored Drag and Drop Handlers ---
   const handleDragStart = (e: React.DragEvent, index: number): void => {
     setDraggedIndex(index);
     e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', index.toString());
   };
 
   const handleDragOver = (e: React.DragEvent): void => {
     e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
   };
 
   const handleDragEnter = (e: React.DragEvent, index: number): void => {
     e.preventDefault();
-    e.stopPropagation();
-    if (draggedIndex !== null && draggedIndex !== index) {
-      setDragOverIndex(index);
-    }
-  };
-
-  const handleDragLeave = (e: React.DragEvent): void => {
-    e.preventDefault();
-    e.stopPropagation();
-    // This complex logic prevents the drag-leave event from firing when moving over child elements
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    const x = e.clientX;
-    const y = e.clientY;
-    const buffer = 5;
-    if (x < rect.left - buffer || x > rect.right + buffer ||
-        y < rect.top - buffer || y > rect.bottom + buffer) {
-      setDragOverIndex(null);
-    }
+    if (draggedIndex === null) return;
+    setDragOverIndex(index);
   };
 
   const handleDrop = async (e: React.DragEvent, dropIndex: number): Promise<void> => {
     e.preventDefault();
-    e.stopPropagation();
-    if (draggedIndex === null || draggedIndex === dropIndex) {
-      setDraggedIndex(null);
-      setDragOverIndex(null);
-      return;
+    if (draggedIndex === null) return;
+
+    // Adjust dropIndex for items shifted by the drag
+    const adjustedDropIndex = dropIndex > draggedIndex ? dropIndex -1 : dropIndex;
+
+    if (draggedIndex === adjustedDropIndex) {
+        setDraggedIndex(null);
+        setDragOverIndex(null);
+        return;
     }
+
     const newWatchlist = [...watchlist];
-    const draggedItem = newWatchlist[draggedIndex];
-    newWatchlist.splice(draggedIndex, 1);
-    newWatchlist.splice(dropIndex, 0, draggedItem);
+    const [draggedItem] = newWatchlist.splice(draggedIndex, 1);
+    newWatchlist.splice(adjustedDropIndex, 0, draggedItem);
+    
     setWatchlist(newWatchlist);
     setDraggedIndex(null);
     setDragOverIndex(null);
+
     try {
       const symbols = newWatchlist.map(stock => stock.symbol);
       await stocksAPI.updateWatchlistOrder(symbols);
     } catch (error) {
       console.error('Failed to update watchlist order in backend:', error);
       setMessage('Failed to save watchlist order. Please try again.');
+      // Revert to original order on failure
+      setWatchlist(watchlist);
       setTimeout(() => setMessage(''), 3000);
     }
   };
@@ -285,22 +274,6 @@ const DashboardPage: React.FC = () => {
   const handleDragEnd = (): void => {
     setDraggedIndex(null);
     setDragOverIndex(null);
-  };
-  // --- END: Restored Drag and Drop Handlers ---
-
-  const getItemTransform = (index: number): string => {
-    if (draggedIndex === null || dragOverIndex === null) return '';
-    if (index === draggedIndex) return '';
-    if (draggedIndex < dragOverIndex) {
-      if (index > draggedIndex && index <= dragOverIndex) {
-        return 'translateY(-70px)';
-      }
-    } else if (draggedIndex > dragOverIndex) {
-      if (index >= dragOverIndex && index < draggedIndex) {
-        return 'translateY(70px)';
-      }
-    }
-    return '';
   };
 
   const handleThemeChange = (newTheme: string): void => {
@@ -369,10 +342,11 @@ const DashboardPage: React.FC = () => {
           isInWatchlist={isInWatchlist} handleSearch={handleSearch}
           handleAddToWatchlist={handleAddToWatchlist} handleRemoveFromWatchlist={handleRemoveFromWatchlist}
           handleDragStart={handleDragStart} handleDragOver={handleDragOver}
-          handleDragEnter={handleDragEnter} handleDragLeave={handleDragLeave}
+          handleDragEnter={handleDragEnter}
           handleDrop={handleDrop} handleDragEnd={handleDragEnd}
           selectedStock={selectedStock} setSelectedStock={setSelectedStock}
-          draggedIndex={draggedIndex} dragOverIndex={dragOverIndex} getItemTransform={getItemTransform}
+          draggedIndex={draggedIndex}
+          dragOverIndex={dragOverIndex}
         />;
       case 'market':
         return <MarketTab topMovers={topMovers} news={news} />;
