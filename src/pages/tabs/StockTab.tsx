@@ -16,10 +16,11 @@ interface StockTabProps {
   handleDragEnter: (e: React.DragEvent, index: number) => void;
   handleDrop: (e: React.DragEvent, dropIndex: number) => void;
   handleDragEnd: () => void;
-  selectedStock: string | null;
-  setSelectedStock: React.Dispatch<React.SetStateAction<string | null>>;
+  selectedStockForHold: string | null;
+  setSelectedStockForHold: React.Dispatch<React.SetStateAction<string | null>>;
   draggedIndex: number | null;
   dragOverIndex: number | null;
+  handleStockClick: (stock: Stock) => void;
 }
 
 const DropZone: React.FC<{
@@ -55,10 +56,11 @@ const StockTab: React.FC<StockTabProps> = ({
   handleDragEnter,
   handleDrop,
   handleDragEnd,
-  selectedStock,
-  setSelectedStock,
+  selectedStockForHold,
+  setSelectedStockForHold,
   draggedIndex,
   dragOverIndex,
+  handleStockClick,
 }) => {
   return (
     <>
@@ -115,7 +117,6 @@ const StockTab: React.FC<StockTabProps> = ({
         {/* Watchlist */}
         <section className="dashboard-section">
           <h2>Your Watchlist</h2>
-          {/* --- START OF CHANGE: Added wrapper div --- */}
           <div className="watchlist-container">
             <div className="stock-list">
               {watchlist.length > 0 ? (
@@ -128,10 +129,7 @@ const StockTab: React.FC<StockTabProps> = ({
                         draggable
                         onDragStart={(e) => handleDragStart(e, i)}
                         onDragEnd={handleDragEnd}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedStock(selectedStock === stock.symbol ? null : stock.symbol);
-                        }}
+                        onClick={() => handleStockClick(stock)}
                       >
                         <div className="drag-handle">⋮⋮</div>
                         <div className="stock-info">
@@ -147,12 +145,12 @@ const StockTab: React.FC<StockTabProps> = ({
                               Score: {stock.score || 50}/100
                             </div>
                           </div>
-                          {selectedStock === stock.symbol && (
+                          {selectedStockForHold === stock.symbol && (
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleRemoveFromWatchlist(stock.symbol);
-                                setSelectedStock(null);
+                                setSelectedStockForHold(null);
                               }}
                               className="trash-button"
                             >
@@ -170,7 +168,6 @@ const StockTab: React.FC<StockTabProps> = ({
               )}
             </div>
           </div>
-          {/* --- END OF CHANGE --- */}
         </section>
 
         {/* Top Movers */}

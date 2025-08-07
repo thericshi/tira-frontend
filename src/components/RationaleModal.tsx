@@ -1,0 +1,61 @@
+import React from 'react';
+import { Stock } from '../types';
+import '../pages/Dashboard.css';
+
+interface RationaleModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  stock: Stock | null;
+  rationale: string | null;
+  loading: boolean;
+  error: string | null;
+}
+
+const RationaleModal: React.FC<RationaleModalProps> = ({
+  isOpen,
+  onClose,
+  stock,
+  rationale,
+  loading,
+  error,
+}) => {
+  if (!isOpen || !stock) return null;
+
+  return (
+    <div className="rationale-modal-overlay" onClick={onClose}>
+      <div className="rationale-modal" onClick={(e) => e.stopPropagation()}>
+        <button className="rationale-modal-close" onClick={onClose}>&times;</button>
+        
+        <div className="rationale-header">
+          <div>
+            <h2>{stock.symbol}</h2>
+            <span className="stock-name">{stock.name}</span>
+          </div>
+          <div className="stock-signal">
+            <div className={`signal ${stock.signal?.toLowerCase() || 'hold'}`}>
+              {stock.signal || 'HOLD'}
+            </div>
+          </div>
+        </div>
+
+        <div className="rationale-content">
+          <div className="score-display">
+            <div className="score-label">TIRA Score</div>
+            <div className="score-value">{stock.score ?? 'N/A'}<span className="score-total">/100</span></div>
+          </div>
+          
+          <div className="rationale-text-container">
+            <h4>Investment Rationale</h4>
+            <div className="rationale-text">
+                {loading && <p>Loading rationale...</p>}
+                {error && <p className="message error">{error}</p>}
+                {rationale && <p>{rationale}</p>}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default RationaleModal;

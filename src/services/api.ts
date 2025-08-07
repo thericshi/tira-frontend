@@ -139,7 +139,8 @@ export const stocksAPI = {
         apiCall('/stocks/watchlist/reorder', {
             method: 'PUT',
             body: JSON.stringify({ symbols })
-        })
+        }),
+    getStockRationale: (symbol: string): Promise<{symbol: string; rationale: string;}> => apiCall(`/stocks/${symbol}/rationale`),
 };
 
 // News API

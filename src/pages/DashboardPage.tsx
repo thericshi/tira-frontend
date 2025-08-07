@@ -16,6 +16,7 @@ import StockTab from './tabs/StockTab';
 import MarketTab from './tabs/MarketTab';
 import DiscoveryTab from './tabs/DiscoveryTab';
 import SettingsTab from './tabs/SettingsTab';
+import RationaleModal from '../components/RationaleModal';
 
 type TabType = 'overview' | 'stock' | 'market' | 'discovery' | 'settings';
 type MessageType = 'success' | 'error' | '';
@@ -33,11 +34,18 @@ const DashboardPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [searchResults, setSearchResults] = useState<Stock[]>([]);
   const [message, setMessage] = useState<string>('');
-  const [selectedStock, setSelectedStock] = useState<string | null>(null);
+  const [selectedStockForHold, setSelectedStockForHold] = useState<string | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [theme, setTheme] = useState<string>('light');
   const [isDemoAccount, setIsDemoAccount] = useState<boolean>(false);
+
+  // Rationale Modal State
+  const [isRationaleModalOpen, setIsRationaleModalOpen] = useState(false);
+  const [selectedStockForRationale, setSelectedStockForRationale] = useState<Stock | null>(null);
+  const [rationale, setRationale] = useState<string | null>(null);
+  const [rationaleLoading, setRationaleLoading] = useState(false);
+  const [rationaleError, setRationaleError] = useState<string | null>(null);
 
   const [settings, setSettings] = useState<UserSettings | null>(null);
   const [settingsLoading, setSettingsLoading] = useState<boolean>(false);
@@ -50,8 +58,8 @@ const DashboardPage: React.FC = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (selectedStock) {
-        setSelectedStock(null);
+      if (selectedStockForHold) {
+        setSelectedStockForHold(null);
       }
     };
 
@@ -59,7 +67,7 @@ const DashboardPage: React.FC = () => {
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
-  }, [selectedStock]);
+  }, [selectedStockForHold]);
 
   const loadDashboardData = async (): Promise<void> => {
     try {
@@ -93,6 +101,29 @@ const DashboardPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleStockClick = async (stock: Stock) => {
+    setSelectedStockForRationale(stock);
+    setIsRationaleModalOpen(true);
+    setRationaleLoading(true);
+    setRationaleError(null);
+    setRationale(null);
+
+    try {
+      const response = await stocksAPI.getStockRationale(stock.symbol);
+      setRationale(response.rationale);
+    } catch (error) {
+      console.error('Failed to fetch rationale:', error);
+      setRationaleError('Could not load rationale for this stock.');
+    } finally {
+      setRationaleLoading(false);
+    }
+  };
+
+  const handleCloseRationaleModal = () => {
+    setIsRationaleModalOpen(false);
+    setSelectedStockForRationale(null);
   };
 
   const handleNotificationToggle = (type: keyof EmailNotifications): void => {
@@ -344,9 +375,10 @@ const DashboardPage: React.FC = () => {
           handleDragStart={handleDragStart} handleDragOver={handleDragOver}
           handleDragEnter={handleDragEnter}
           handleDrop={handleDrop} handleDragEnd={handleDragEnd}
-          selectedStock={selectedStock} setSelectedStock={setSelectedStock}
+          selectedStockForHold={selectedStockForHold} setSelectedStockForHold={setSelectedStockForHold}
           draggedIndex={draggedIndex}
           dragOverIndex={dragOverIndex}
+          handleStockClick={handleStockClick}
         />;
       case 'market':
         return <MarketTab topMovers={topMovers} news={news} />;
@@ -414,6 +446,15 @@ const DashboardPage: React.FC = () => {
           {renderTabContent()}
         </div>
       </main>
+
+      <RationaleModal 
+        isOpen={isRationaleModalOpen}
+        onClose={handleCloseRationaleModal}
+        stock={selectedStockForRationale}
+        rationale={rationale}
+        loading={rationaleLoading}
+        error={rationaleError}
+      />
     </div>
   );
 };

@@ -715,6 +715,200 @@
     color: #333;
 }
 
+/* Rationale Modal Styles */
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.rationale-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
+}
+
+.rationale-modal {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    transform: translateY(-20px);
+    opacity: 0;
+    animation: slideInUp 0.4s 0.1s forwards;
+}
+
+.rationale-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #f1f5f9;
+    color: #64748b;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.rationale-modal-close:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+    transform: rotate(90deg);
+}
+
+.rationale-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 1.5rem;
+}
+
+.rationale-header h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0;
+    color: #000;
+}
+
+.rationale-header .stock-name {
+    color: #64748b;
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+.rationale-header .stock-signal {
+    margin-left: auto;
+}
+
+.rationale-content .score-display {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.rationale-content .score-label {
+    font-size: 1rem;
+    color: #64748b;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.rationale-content .score-value {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #000;
+    line-height: 1;
+}
+
+.rationale-content .score-total {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #94a3b8;
+}
+
+.rationale-text-container h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+.rationale-text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #334155;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.rationale-text p {
+    margin: 0;
+}
+
+
+/* Dark Theme for Modal */
+[data-theme="dark"] .rationale-modal {
+    background: #1e293b;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+}
+
+[data-theme="dark"] .rationale-modal-close {
+    background: #334155;
+    color: #94a3b8;
+}
+
+[data-theme="dark"] .rationale-modal-close:hover {
+    background: #475569;
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .rationale-header {
+    border-bottom-color: #334155;
+}
+
+[data-theme="dark"] .rationale-header h2 {
+    color: #fff;
+}
+
+[data-theme="dark"] .rationale-header .stock-name {
+    color: #94a3b8;
+}
+
+[data-theme="dark"] .rationale-content .score-label {
+    color: #94a3b8;
+}
+
+[data-theme="dark"] .rationale-content .score-value {
+    color: #fff;
+}
+
+[data-theme="dark"] .rationale-content .score-total {
+    color: #64748b;
+}
+
+[data-theme="dark"] .rationale-text-container h4 {
+    color: #cbd5e1;
+}
+
+[data-theme="dark"] .rationale-text {
+    background: #111827;
+    color: #cbd5e1;
+    border-color: #334155;
+}
+
+
 /* News */
 .news-list {
     display: flex;
