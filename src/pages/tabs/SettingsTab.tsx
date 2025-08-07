@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
+import { UserSettings, EmailNotifications } from '../../types';
 
 interface SettingsTabProps {
   theme: string;
   handleThemeChange: (newTheme: string) => void;
   handleDeleteAccount: () => void;
   isDemoAccount: boolean;
+  settings: UserSettings | null;
+  handleSettingChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  handleNotificationToggle: (type: keyof EmailNotifications) => void;
+  handleSaveSettings: () => void;
+  loading: boolean;
+  message: string;
+  messageType: 'success' | 'error' | '';
 }
 
 const SettingsTab: React.FC<SettingsTabProps> = ({
@@ -12,67 +20,134 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
   handleThemeChange,
   handleDeleteAccount,
   isDemoAccount,
+  settings,
+  handleSettingChange,
+  handleNotificationToggle,
+  handleSaveSettings,
+  loading,
+  message,
+  messageType,
 }) => {
+  if (!settings) {
+    return (
+      <div className="dashboard-section">
+        <div className="loading-spinner"></div>
+        <p>Loading settings...</p>
+      </div>
+    );
+  }
+
   return (
     <>
-      {/* Notification Settings */}
+      {message && (
+        <div className={`settings-message ${messageType}`}>
+          {message}
+        </div>
+      )}
+
+      {/* Email Notifications Section */}
       <section className="dashboard-section">
-        <h2>Notification Settings</h2>
+        <h2>📧 Email Notifications</h2>
         <p className="section-description">
-          Manage your notification preferences to stay informed about market changes and portfolio updates.
+          Manage your notification preferences for trading signals and market updates.
         </p>
         <div className="notification-grid">
-          <div className="notification-item">
-            <div className="notification-info">
-              <h3>Price Alerts</h3>
-              <p>Get notified when stocks in your watchlist reach target prices</p>
-            </div>
-            <label className="toggle-switch">
-              <input type="checkbox" defaultChecked />
-              <span className="slider"></span>
-            </label>
-          </div>
-          <div className="notification-item">
-            <div className="notification-info">
-              <h3>News Alerts</h3>
-              <p>Receive breaking news about your watched stocks and market sectors</p>
-            </div>
-            <label className="toggle-switch">
-              <input type="checkbox" defaultChecked />
-              <span className="slider"></span>
-            </label>
-          </div>
-          <div className="notification-item">
-            <div className="notification-info">
-              <h3>Market Updates</h3>
-              <p>Daily market summaries and key economic indicators</p>
-            </div>
-            <label className="toggle-switch">
-              <input type="checkbox" />
-              <span className="slider"></span>
-            </label>
-          </div>
-          <div className="notification-item">
-            <div className="notification-info">
-              <h3>Weekly Reports</h3>
-              <p>Comprehensive weekly portfolio performance and market analysis</p>
-            </div>
-            <label className="toggle-switch">
-              <input type="checkbox" defaultChecked />
-              <span className="slider"></span>
-            </label>
-          </div>
+          {Object.keys(settings.emailNotifications).map((key) => {
+            const typedKey = key as keyof EmailNotifications;
+            const labels: Record<keyof EmailNotifications, { title: string; desc: string }> = {
+              buySignals: { title: '🟢 Buy Signals', desc: 'Alerts when stocks show strong buy indicators' },
+              sellSignals: { title: '🔴 Sell Signals', desc: 'Alerts when stocks show strong sell indicators' },
+              holdSignals: { title: '🟡 Hold Signals', desc: 'Notifications for hold recommendations' },
+              priceAlerts: { title: '📊 Price Alerts', desc: 'Notified of significant price movements' },
+              dailyDigest: { title: '📈 Daily Digest', desc: 'Daily summary of market activity' },
+              weeklyReport: { title: '📋 Weekly Report', desc: 'Weekly market analysis and performance report' },
+            };
+            return (
+              <div className="notification-item" key={key}>
+                <div className="notification-info">
+                  <h3>{labels[typedKey].title}</h3>
+                  <p>{labels[typedKey].desc}</p>
+                </div>
+                <label className="toggle-switch">
+                  <input
+                    type="checkbox"
+                    checked={settings.emailNotifications[typedKey]}
+                    onChange={() => handleNotificationToggle(typedKey)}
+                  />
+                  <span className="slider"></span>
+                </label>
+              </div>
+            );
+          })}
         </div>
       </section>
 
-      {/* Display Preferences */}
+      {/* Notification Preferences Section */}
       <section className="dashboard-section">
-        <h2>Display Preferences</h2>
-        <p className="section-description">
-          Customize how information is displayed in your dashboard.
-        </p>
+        <h2>⚙️ Notification Preferences</h2>
         <div className="preference-item">
-          <label>Theme</label>
+            <label htmlFor="notificationFrequency"><strong>Notification Frequency</strong></label>
+            <select
+                id="notificationFrequency"
+                name="notificationFrequency"
+                value={settings.notificationFrequency}
+                onChange={handleSettingChange}
+                className="form-select"
+            >
+                <option value="immediate">Immediate</option>
+                <option value="hourly">Hourly Digest</option>
+                <option value="daily">Daily Digest</option>
+            </select>
+        </div>
+        <div className="preference-item">
+            <label htmlFor="priceAlertThreshold"><strong>Price Alert Threshold (%)</strong></label>
+            <input
+                type="number"
+                id="priceAlertThreshold"
+                name="priceAlertThreshold"
+                min="1"
+                max="50"
+                value={settings.priceAlertThreshold}
+                onChange={handleSettingChange}
+                className="form-input"
+            />
+            <small>Minimum percentage change to trigger price alerts</small>
+        </div>
+        <div className="preference-item">
+            <div className="checkbox-item">
+                <label>
+                    <input
+                        type="checkbox"
+                        name="watchlistNotifications"
+                        checked={settings.watchlistNotifications}
+                        onChange={handleSettingChange}
+                    />
+                    <strong>Watchlist Only</strong>
+                </label>
+                <p>Only receive notifications for stocks in your watchlist</p>
+            </div>
+        </div>
+        <div className="preference-item">
+            <div className="checkbox-item">
+                <label>
+                    <input
+                        type="checkbox"
+                        name="marketHoursOnly"
+                        checked={settings.marketHoursOnly}
+                        onChange={handleSettingChange}
+                    />
+                    <strong>Market Hours Only</strong>
+                </label>
+                <p>Only send notifications during market hours (9:30 AM - 4:00 PM ET)</p>
+            </div>
+        </div>
+      </section>
+
+      {/* Display Preferences Section */}
+      <section className="dashboard-section">
+        <h2>🎨 Display Preferences</h2>
+        <div className="preference-item">
+          <label><strong>Theme</strong></label>
           <select
             className="form-select"
             value={theme}
@@ -82,54 +157,10 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
             <option value="dark">Dark</option>
             <option value="auto">Auto (System)</option>
           </select>
-          <small>Choose your preferred color scheme</small>
-        </div>
-        <div className="preference-item">
-          <label>Currency</label>
-          <select className="form-select">
-            <option value="USD">USD ($)</option>
-            <option value="EUR">EUR (€)</option>
-            <option value="GBP">GBP (£)</option>
-            <option value="CAD">CAD (C$)</option>
-          </select>
-          <small>Select your preferred currency for displaying prices</small>
-        </div>
-        <div className="preference-item">
-          <label>Timezone</label>
-          <select className="form-select">
-            <option value="America/New_York">Eastern Time (ET)</option>
-            <option value="America/Chicago">Central Time (CT)</option>
-            <option value="America/Denver">Mountain Time (MT)</option>
-            <option value="America/Los_Angeles">Pacific Time (PT)</option>
-            <option value="UTC">UTC</option>
-          </select>
-          <small>Choose your timezone for market hours and timestamps</small>
         </div>
       </section>
 
-      {/* Privacy Settings */}
-      <section className="dashboard-section">
-        <h2>Privacy & Data</h2>
-        <p className="section-description">
-          Control how your data is used and shared.
-        </p>
-        <div className="checkbox-item">
-          <label>
-            <input type="checkbox" defaultChecked />
-            Allow analytics to improve service quality
-          </label>
-          <p>Help us improve TIRA by sharing anonymous usage data</p>
-        </div>
-        <div className="checkbox-item">
-          <label>
-            <input type="checkbox" />
-            Receive marketing communications
-          </label>
-          <p>Get updates about new features and market insights via email</p>
-        </div>
-      </section>
-
-      {/* Account Actions */}
+      {/* Account Actions Section */}
       <section className="dashboard-section">
         <h2>Account Management</h2>
         <p className="section-description">
@@ -138,24 +169,18 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
         <div className="settings-actions">
           <button
             className="btn btn-primary"
-            style={{ background: '#000000', color: 'white', border: '2px solid #000000' }}
+            onClick={handleSaveSettings}
+            disabled={loading}
           >
-            Save Settings
+            {loading ? 'Saving...' : 'Save Settings'}
           </button>
           <button
-            className="btn btn-secondary"
-            style={{ background: '#000000', color: 'white', border: '2px solid #000000' }}
-          >
-            Export Data
-          </button>
-          <button
-            className="btn"
-            style={{ background: '#dc2626', color: 'white', border: '2px solid #dc2626' }}
+            className="btn btn-danger"
             onClick={handleDeleteAccount}
-            disabled={isDemoAccount}
+            disabled={isDemoAccount || loading}
             title={isDemoAccount ? 'Demo accounts cannot be deleted' : 'Permanently delete your account'}
           >
-            {isDemoAccount ? 'Delete Account (Demo)' : 'Delete Account'}
+            {isDemoAccount ? 'Delete Account (Disabled)' : 'Delete Account'}
           </button>
         </div>
       </section>

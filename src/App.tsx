@@ -10,7 +10,6 @@ import ContactPage from './pages/ContactPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
-import SettingsPage from './pages/SettingsPage';
 
 // Protected Route Component
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
@@ -49,12 +48,7 @@ const App: React.FC = () => {
             <DashboardPage />
           </ProtectedRoute>
         } />
-        <Route path="/settings" element={
-          <ProtectedRoute>
-            <SettingsPage />
-          </ProtectedRoute>
-        } />
-        
+                
         {/* Catch all route */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

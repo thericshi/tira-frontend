@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { userAPI, marketAPI, stocksAPI, newsAPI } from '../services/api';
+import { userAPI, marketAPI, stocksAPI, newsAPI, authAPI } from '../services/api';
 import { clearAuthData, getUserEmail } from '../utils/auth';
 import {
   User,
   MarketData,
   Stock,
   NewsArticle,
+  UserSettings,
+  EmailNotifications,
 } from '../types';
 import './Dashboard.css';
 import OverviewTab from './tabs/OverviewTab';
@@ -16,6 +18,7 @@ import DiscoveryTab from './tabs/DiscoveryTab';
 import SettingsTab from './tabs/SettingsTab';
 
 type TabType = 'overview' | 'stock' | 'market' | 'discovery' | 'settings';
+type MessageType = 'success' | 'error' | '';
 
 const DashboardPage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -35,6 +38,11 @@ const DashboardPage: React.FC = () => {
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [theme, setTheme] = useState<string>('light');
   const [isDemoAccount, setIsDemoAccount] = useState<boolean>(false);
+
+  const [settings, setSettings] = useState<UserSettings | null>(null);
+  const [settingsLoading, setSettingsLoading] = useState<boolean>(false);
+  const [settingsMessage, setSettingsMessage] = useState<string>('');
+  const [settingsMessageType, setSettingsMessageType] = useState<MessageType>('');
 
   useEffect(() => {
     loadDashboardData();
@@ -63,12 +71,14 @@ const DashboardPage: React.FC = () => {
         watchlistResponse,
         topMoversResponse,
         newsResponse,
+        settingsResponse,
       ] = await Promise.all([
         userAPI.getProfile(),
         marketAPI.getOverview(),
         stocksAPI.getWatchlist(),
         stocksAPI.getTopMovers(),
         newsAPI.getMarketNews(),
+        authAPI.getUserSettings().then(res => res.json()),
       ]);
 
       setUser(userResponse);
@@ -76,11 +86,67 @@ const DashboardPage: React.FC = () => {
       setWatchlist(watchlistResponse.stocks || []);
       setTopMovers(topMoversResponse.stocks || []);
       setNews(newsResponse.articles || []);
+      setSettings(settingsResponse);
     } catch (error) {
       console.error('Dashboard data loading error:', error);
       setError('Failed to load dashboard data. Please refresh the page.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleNotificationToggle = (type: keyof EmailNotifications): void => {
+    if (!settings) return;
+    setSettings((prev: UserSettings | null) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        emailNotifications: {
+          ...prev.emailNotifications,
+          [type]: !prev.emailNotifications[type],
+        },
+      };
+    });
+  };
+
+  const handleSettingChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
+    if (!settings) return;
+    const { name, value, type } = e.target;
+    const isCheckbox = type === 'checkbox';
+    const checkedValue = (e.target as HTMLInputElement).checked;
+
+    setSettings(prev => {
+        if (!prev) return null;
+        return {
+            ...prev,
+            [name]: isCheckbox ? checkedValue : value,
+        };
+    });
+  };
+
+  const handleSaveSettings = async (): Promise<void> => {
+    if (!settings) return;
+    try {
+      setSettingsLoading(true);
+      setSettingsMessage('');
+      
+      const response = await authAPI.updateUserSettings(settings);
+      const data = await response.json();
+      
+      if (response.ok) {
+        setSettingsMessage('Settings saved successfully!');
+        setSettingsMessageType('success');
+      } else {
+        setSettingsMessage(data.detail || 'Failed to save settings');
+        setSettingsMessageType('error');
+      }
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      setSettingsMessage('Connection error. Please try again.');
+      setSettingsMessageType('error');
+    } finally {
+      setSettingsLoading(false);
+      setTimeout(() => setSettingsMessage(''), 3000);
     }
   };
 
@@ -94,7 +160,6 @@ const DashboardPage: React.FC = () => {
     if (tab === 'discovery' && allStocks.length === 0) {
       loadAllStocks();
     }
-
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -113,7 +178,6 @@ const DashboardPage: React.FC = () => {
       setSearchResults([]);
       return;
     }
-
     try {
       const response = await stocksAPI.searchStocks(query);
       setSearchResults(response.stocks || []);
@@ -127,12 +191,10 @@ const DashboardPage: React.FC = () => {
     try {
       const response = await stocksAPI.addToWatchlist(symbol);
       setMessage(response.message);
-
       if (response.success) {
         const watchlistResponse = await stocksAPI.getWatchlist();
         setWatchlist(watchlistResponse.stocks || []);
       }
-
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
       console.error('Failed to add to watchlist:', error);
@@ -145,12 +207,10 @@ const DashboardPage: React.FC = () => {
     try {
       const response = await stocksAPI.removeFromWatchlist(symbol);
       setMessage(response.message);
-
       if (response.success) {
         const watchlistResponse = await stocksAPI.getWatchlist();
         setWatchlist(watchlistResponse.stocks || []);
       }
-
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
       console.error('Failed to remove from watchlist:', error);
@@ -163,6 +223,7 @@ const DashboardPage: React.FC = () => {
     return watchlist.some(stock => stock.symbol === symbol);
   };
 
+  // --- START: Restored Drag and Drop Handlers ---
   const handleDragStart = (e: React.DragEvent, index: number): void => {
     setDraggedIndex(index);
     e.dataTransfer.effectAllowed = 'move';
@@ -178,19 +239,14 @@ const DashboardPage: React.FC = () => {
     e.preventDefault();
     e.stopPropagation();
     if (draggedIndex !== null && draggedIndex !== index) {
-      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-      const mouseY = e.clientY;
-      const elementHeight = rect.height;
-      const bufferZone = elementHeight * 1.0;
-      if (mouseY >= rect.top - bufferZone && mouseY <= rect.bottom + bufferZone) {
-        setDragOverIndex(index);
-      }
+      setDragOverIndex(index);
     }
   };
 
   const handleDragLeave = (e: React.DragEvent): void => {
     e.preventDefault();
     e.stopPropagation();
+    // This complex logic prevents the drag-leave event from firing when moving over child elements
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     const x = e.clientX;
     const y = e.clientY;
@@ -204,13 +260,11 @@ const DashboardPage: React.FC = () => {
   const handleDrop = async (e: React.DragEvent, dropIndex: number): Promise<void> => {
     e.preventDefault();
     e.stopPropagation();
-
     if (draggedIndex === null || draggedIndex === dropIndex) {
       setDraggedIndex(null);
       setDragOverIndex(null);
       return;
     }
-
     const newWatchlist = [...watchlist];
     const draggedItem = newWatchlist[draggedIndex];
     newWatchlist.splice(draggedIndex, 1);
@@ -218,7 +272,6 @@ const DashboardPage: React.FC = () => {
     setWatchlist(newWatchlist);
     setDraggedIndex(null);
     setDragOverIndex(null);
-
     try {
       const symbols = newWatchlist.map(stock => stock.symbol);
       await stocksAPI.updateWatchlistOrder(symbols);
@@ -233,6 +286,7 @@ const DashboardPage: React.FC = () => {
     setDraggedIndex(null);
     setDragOverIndex(null);
   };
+  // --- END: Restored Drag and Drop Handlers ---
 
   const getItemTransform = (index: number): string => {
     if (draggedIndex === null || dragOverIndex === null) return '';
@@ -264,34 +318,35 @@ const DashboardPage: React.FC = () => {
 
   const handleDeleteAccount = async (): Promise<void> => {
     if (isDemoAccount) {
-      setMessage('Demo accounts cannot be deleted. This is a demonstration account.');
-      setTimeout(() => setMessage(''), 5000);
+      setSettingsMessage('Demo accounts cannot be deleted.');
+      setSettingsMessageType('error');
+      setTimeout(() => setSettingsMessage(''), 5000);
       return;
     }
-
-    if (window.confirm('Are you sure you want to delete your account? This action cannot be undone and will permanently remove all your data, including your watchlist, settings, and trading history.')) {
-      if (window.confirm('This is your final warning. Deleting your account will permanently remove all data and cannot be reversed. Type "DELETE" in the next prompt to confirm.')) {
-        if (window.prompt('Please type "DELETE" (in capital letters) to confirm account deletion:') === 'DELETE') {
+    if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+        if (window.prompt('Please type "DELETE" to confirm account deletion:') === 'DELETE') {
           try {
             const response = await userAPI.deleteAccount();
             if (response.success) {
-              alert('Your account has been successfully deleted. You will now be logged out.');
+              alert('Account deleted successfully. You will be logged out.');
               clearAuthData();
               window.location.href = '/';
             } else {
-              setMessage('Failed to delete account. Please try again or contact support.');
-              setTimeout(() => setMessage(''), 5000);
+              setSettingsMessage('Failed to delete account.');
+              setSettingsMessageType('error');
+              setTimeout(() => setSettingsMessage(''), 5000);
             }
           } catch (error) {
             console.error('Account deletion error:', error);
-            setMessage('An error occurred while deleting your account. Please try again.');
-            setTimeout(() => setMessage(''), 5000);
+            setSettingsMessage('An error occurred while deleting your account.');
+            setSettingsMessageType('error');
+            setTimeout(() => setSettingsMessage(''), 5000);
           }
         } else {
-          setMessage('Account deletion cancelled. The confirmation text did not match.');
-          setTimeout(() => setMessage(''), 3000);
+          setSettingsMessage('Account deletion cancelled.');
+          setSettingsMessageType('error');
+          setTimeout(() => setSettingsMessage(''), 3000);
         }
-      }
     }
   };
 
@@ -300,7 +355,7 @@ const DashboardPage: React.FC = () => {
     setTheme(savedTheme);
     handleThemeChange(savedTheme);
     const userEmail = getUserEmail();
-    setIsDemoAccount(userEmail?.includes('demo') || userEmail?.includes('test') || false);
+    setIsDemoAccount(userEmail?.includes('demo') || false);
   }, []);
 
   const renderTabContent = (): JSX.Element | null => {
@@ -309,33 +364,34 @@ const DashboardPage: React.FC = () => {
         return <OverviewTab marketData={marketData} watchlist={watchlist} news={news} handleTabChange={handleTabChange} />;
       case 'stock':
         return <StockTab
-          watchlist={watchlist}
-          topMovers={topMovers}
-          message={message}
-          searchQuery={searchQuery}
-          searchResults={searchResults}
-          isInWatchlist={isInWatchlist}
-          handleSearch={handleSearch}
-          handleAddToWatchlist={handleAddToWatchlist}
-          handleRemoveFromWatchlist={handleRemoveFromWatchlist}
-          handleDragStart={handleDragStart}
-          handleDragOver={handleDragOver}
-          handleDragEnter={handleDragEnter}
-          handleDragLeave={handleDragLeave}
-          handleDrop={handleDrop}
-          handleDragEnd={handleDragEnd}
-          selectedStock={selectedStock}
-          setSelectedStock={setSelectedStock}
-          draggedIndex={draggedIndex}
-          dragOverIndex={dragOverIndex}
-          getItemTransform={getItemTransform}
+          watchlist={watchlist} topMovers={topMovers} message={message}
+          searchQuery={searchQuery} searchResults={searchResults}
+          isInWatchlist={isInWatchlist} handleSearch={handleSearch}
+          handleAddToWatchlist={handleAddToWatchlist} handleRemoveFromWatchlist={handleRemoveFromWatchlist}
+          handleDragStart={handleDragStart} handleDragOver={handleDragOver}
+          handleDragEnter={handleDragEnter} handleDragLeave={handleDragLeave}
+          handleDrop={handleDrop} handleDragEnd={handleDragEnd}
+          selectedStock={selectedStock} setSelectedStock={setSelectedStock}
+          draggedIndex={draggedIndex} dragOverIndex={dragOverIndex} getItemTransform={getItemTransform}
         />;
       case 'market':
         return <MarketTab topMovers={topMovers} news={news} />;
       case 'discovery':
         return <DiscoveryTab />;
       case 'settings':
-        return <SettingsTab theme={theme} handleThemeChange={handleThemeChange} handleDeleteAccount={handleDeleteAccount} isDemoAccount={isDemoAccount} />;
+        return <SettingsTab 
+                  theme={theme} 
+                  handleThemeChange={handleThemeChange} 
+                  handleDeleteAccount={handleDeleteAccount} 
+                  isDemoAccount={isDemoAccount}
+                  settings={settings}
+                  handleSettingChange={handleSettingChange}
+                  handleNotificationToggle={handleNotificationToggle}
+                  handleSaveSettings={handleSaveSettings}
+                  loading={settingsLoading}
+                  message={settingsMessage}
+                  messageType={settingsMessageType}
+                />;
       default:
         return null;
     }
@@ -356,16 +412,11 @@ const DashboardPage: React.FC = () => {
         <div className="container">
           <div className="header-content">
             <div className="logo">
-              <Link to="/">
-                <h1>TIRA</h1>
-                <span>Dashboard</span>
-              </Link>
+              <Link to="/"><h1>TIRA</h1><span>Dashboard</span></Link>
             </div>
             <div className="user-menu">
               <span>Welcome, {user?.name || getUserEmail()}</span>
-              <button onClick={handleLogout} className="btn btn-secondary">
-                Logout
-              </button>
+              <button onClick={handleLogout} className="btn btn-secondary">Logout</button>
             </div>
           </div>
         </div>
@@ -374,41 +425,11 @@ const DashboardPage: React.FC = () => {
       <nav className="dashboard-tabs">
         <div className="container">
           <div className="tab-list">
-            <button
-              className={`tab-button ${activeTab === 'overview' ? 'active' : ''}`}
-              onClick={() => handleTabChange('overview')}
-            >
-              <span>📊</span>
-              Overview
-            </button>
-            <button
-              className={`tab-button ${activeTab === 'stock' ? 'active' : ''}`}
-              onClick={() => handleTabChange('stock')}
-            >
-              <span>📈</span>
-              Stock
-            </button>
-            <button
-              className={`tab-button ${activeTab === 'market' ? 'active' : ''}`}
-              onClick={() => handleTabChange('market')}
-            >
-              <span>🌐</span>
-              Market
-            </button>
-            <button
-              className={`tab-button ${activeTab === 'discovery' ? 'active' : ''}`}
-              onClick={() => handleTabChange('discovery')}
-            >
-              <span>🔍</span>
-              Discovery
-            </button>
-            <button
-              className={`tab-button ${activeTab === 'settings' ? 'active' : ''}`}
-              onClick={() => handleTabChange('settings')}
-            >
-              <span>⚙️</span>
-              Settings
-            </button>
+            <button className={`tab-button ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => handleTabChange('overview')}><span>📊</span>Overview</button>
+            <button className={`tab-button ${activeTab === 'stock' ? 'active' : ''}`} onClick={() => handleTabChange('stock')}><span>📈</span>Stock</button>
+            <button className={`tab-button ${activeTab === 'market' ? 'active' : ''}`} onClick={() => handleTabChange('market')}><span>🌐</span>Market</button>
+            <button className={`tab-button ${activeTab === 'discovery' ? 'active' : ''}`} onClick={() => handleTabChange('discovery')}><span>🔍</span>Discovery</button>
+            <button className={`tab-button ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => handleTabChange('settings')}><span>⚙️</span>Settings</button>
           </div>
         </div>
       </nav>
