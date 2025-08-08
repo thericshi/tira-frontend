@@ -22,7 +22,7 @@ const Limitations = () => {
 
           <div className="focus-grid">
             <div className="focus-section optimal">
-              <h4>🎯 Optimal Focus Areas</h4>
+              <h4>Optimal Focus Areas</h4>
               <div className="focus-list">
                 <div className="focus-item supported">
                   <span className="icon">✅</span>
@@ -49,7 +49,7 @@ const Limitations = () => {
             </div>
 
             <div className="focus-section controlled">
-              <h4>⚠️ Controlled Risk Areas</h4>
+              <h4>Controlled Risk Areas</h4>
               <div className="focus-list">
                 <div className="focus-item not-supported">
                   <span className="icon">🚫</span>
@@ -78,7 +78,6 @@ const Limitations = () => {
           
           <div className="disclaimer">
             <div className="disclaimer-header">
-              <span className="disclaimer-icon">⚖️</span>
               <h4>Investment Responsibility</h4>
             </div>
             <p>

@@ -91,9 +91,9 @@ const AboutPage: React.FC = () => {
             
             <div className="team-grid">
               <div className="team-member">
-                <div className="avatar">AS</div>
+                <div className="avatar">ES</div>
                 <h4>Eric Shi</h4>
-                <div className="role">CEO & Co-Founder</div>
+                <div className="role">Founder</div>
                 <p>Bio</p>
               </div>
             </div>
