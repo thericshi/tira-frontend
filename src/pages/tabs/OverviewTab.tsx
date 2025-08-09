@@ -1,17 +1,25 @@
 import React from 'react';
-import { MarketData, Stock, NewsArticle } from '../../types';
+import { MarketData, Stock, NewsArticle, User } from '../../types';
 import './OverviewTab.css';
 
 interface OverviewTabProps {
+  user: User | null;
   marketData: MarketData | null;
   watchlist: Stock[];
   news: NewsArticle[];
   handleTabChange: (tab: 'overview' | 'stock' | 'market' | 'discovery' | 'settings') => void;
 }
 
-const OverviewTab: React.FC<OverviewTabProps> = ({ marketData, watchlist, news, handleTabChange }) => {
+const OverviewTab: React.FC<OverviewTabProps> = ({ user, marketData, watchlist, news, handleTabChange }) => {
+  const firstName = user?.name?.split(' ')[0];
+  
   return (
     <>
+      <div className="overview-header">
+        <h2>Hello {firstName || 'User'},</h2>
+        <p>Here is your dashboard overview for today</p>
+      </div>
+
       {/* Market Overview */}
       <section className="dashboard-section">
         <h2>Market Overview</h2>

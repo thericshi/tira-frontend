@@ -1,3 +1,24 @@
+/* Overview Header */
+.overview-header {
+  margin-bottom: 2rem;
+  padding: 1rem;
+}
+
+.overview-header h2 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem 0;
+}
+
+.overview-header p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+
 /* Quick Actions */
 .quick-actions {
     display: grid;
@@ -10,8 +31,8 @@
     align-items: center;
     gap: 1rem;
     padding: 1.5rem;
-    background: white;
-    border: 2px solid #e5e7eb;
+    background: var(--item-bg);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -19,7 +40,7 @@
 }
 
 .action-btn:hover {
-    border-color: #000000;
+    border-color: #D4AF37;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -45,17 +66,8 @@
 }
 
 /* Dark Theme */
-[data-theme="dark"] .action-btn {
-    background: #1f2937;
-    border-color: #374151;
-}
-
 [data-theme="dark"] .action-btn:hover {
-    border-color: #f9fafb;
-}
-
-[data-theme="dark"] .action-btn strong {
-    color: #f9fafb;
+    border-color: #D4AF37;
 }
 
 /* Responsive */
@@ -67,5 +79,9 @@
     
     .action-btn {
         padding: 1rem;
+    }
+    
+    .overview-header h2 {
+        font-size: 1.75rem;
     }
 }

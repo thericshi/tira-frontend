@@ -365,7 +365,7 @@ const DashboardPage: React.FC = () => {
   const renderTabContent = (): JSX.Element | null => {
     switch (activeTab) {
       case 'overview':
-        return <OverviewTab marketData={marketData} watchlist={watchlist} news={news} handleTabChange={handleTabChange} />;
+        return <OverviewTab user={user} marketData={marketData} watchlist={watchlist} news={news} handleTabChange={handleTabChange} />;
       case 'stock':
         return <StockTab
           watchlist={watchlist} topMovers={topMovers} message={message}
