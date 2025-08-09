@@ -1,5 +1,6 @@
 import React from 'react';
 import { MarketData, Stock, NewsArticle } from '../../types';
+import './OverviewTab.css';
 
 interface OverviewTabProps {
   marketData: MarketData | null;

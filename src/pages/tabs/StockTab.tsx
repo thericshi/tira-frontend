@@ -1,5 +1,6 @@
 import React from 'react';
 import { Stock } from '../../types';
+import './StockTab.css';
 
 interface StockTabProps {
   watchlist: Stock[];

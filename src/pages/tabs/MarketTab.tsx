@@ -1,5 +1,6 @@
 import React from 'react';
 import { Stock, NewsArticle } from '../../types';
+import './MarketTab.css';
 
 interface MarketTabProps {
   topMovers: Stock[];

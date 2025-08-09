@@ -1,0 +1,71 @@
+/* Quick Actions */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.action-btn:hover {
+    border-color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn span {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.action-btn strong {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary, #000000);
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.action-btn p {
+    font-size: 0.85rem;
+    color: var(--text-secondary, #666);
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Dark Theme */
+[data-theme="dark"] .action-btn {
+    background: #1f2937;
+    border-color: #374151;
+}
+
+[data-theme="dark"] .action-btn:hover {
+    border-color: #f9fafb;
+}
+
+[data-theme="dark"] .action-btn strong {
+    color: #f9fafb;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .quick-actions {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .action-btn {
+        padding: 1rem;
+    }
+}

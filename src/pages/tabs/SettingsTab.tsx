@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { UserSettings, EmailNotifications } from '../../types';
+import './SettingsTab.css';
 
 interface SettingsTabProps {
   theme: string;

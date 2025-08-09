@@ -1,0 +1,68 @@
+/* Market Sectors */
+.sector-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.sector-card {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sector-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary, #000000);
+    margin: 0;
+}
+
+.sector-performance {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sector-change {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.sector-change.positive {
+    color: #059669;
+}
+
+.sector-change.negative {
+    color: #dc2626;
+}
+
+.sector-trend {
+    font-size: 1.2rem;
+}
+
+/* Dark Theme */
+[data-theme="dark"] .sector-card {
+    background: #111827;
+    border-color: #374151;
+}
+
+[data-theme="dark"] .sector-card h3 {
+    color: #f9fafb;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sector-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .sector-card {
+        padding: 1rem;
+    }
+}

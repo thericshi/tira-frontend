@@ -413,42 +413,51 @@ const DashboardPage: React.FC = () => {
   }
 
   return (
-    
-<div className="dashboard-layout">
-       <aside className="sidebar">
-         <div className="sidebar-header">
-           <Link to="/" className="logo">
-             <h1>TIRA</h1>
-             <span>Trading Intelligence</span>
-           </Link>
-         </div>
-         <nav className="sidebar-nav">
-           <div className="nav-group">
-             <h3 className="nav-group-title">Menu</h3>
-             <button className={`tab-button ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => handleTabChange('overview')}><span>📊</span>Overview</button>
-             <button className={`tab-button ${activeTab === 'stock' ? 'active' : ''}`} onClick={() => handleTabChange('stock')}><span>📈</span>Stock</button>
-             <button className={`tab-button ${activeTab === 'market' ? 'active' : ''}`} onClick={() => handleTabChange('market')}><span>🌐</span>Market</button>
-             <button className={`tab-button ${activeTab === 'discovery' ? 'active' : ''}`} onClick={() => handleTabChange('discovery')}><span>🔍</span>Discovery</button>
+    <div className="dashboard-layout">
+      <aside className="sidebar">
+        <div className="sidebar-header">
+          <Link to="/" className="logo">
+            <h1>TIRA</h1>
+            <span className="nav-text">Trading Intelligence</span>
+          </Link>
+        </div>
+        <nav className="sidebar-nav">
+          <div className="nav-group">
+            <h3 className="nav-group-title">Menu</h3>
+            <button className={`tab-button ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => handleTabChange('overview')}>
+                <span>📊</span><span className="nav-text">Overview</span>
+            </button>
+            <button className={`tab-button ${activeTab === 'stock' ? 'active' : ''}`} onClick={() => handleTabChange('stock')}>
+                <span>📈</span><span className="nav-text">Stock</span>
+            </button>
+            <button className={`tab-button ${activeTab === 'market' ? 'active' : ''}`} onClick={() => handleTabChange('market')}>
+                <span>🌐</span><span className="nav-text">Market</span>
+            </button>
+            <button className={`tab-button ${activeTab === 'discovery' ? 'active' : ''}`} onClick={() => handleTabChange('discovery')}>
+                <span>🔍</span><span className="nav-text">Discovery</span>
+            </button>
           </div>
-           <div className="nav-group">
-             <h3 className="nav-group-title">Profile</h3>
-             <button className={`tab-button ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => handleTabChange('settings')}><span>⚙️</span>Settings</button>
-           </div>
-         </nav>
-         <div className="user-profile">
-           <div className="user-info">
-             <span className="user-name">{user?.name || 'User'}</span>
-             <span className="user-email">{getUserEmail()}</span>
-           </div>
-
-
-            <button onClick={handleLogout} className="logout-button">Logout</button>
-            </div>
-            </aside>
-        <div className="content-wrapper">
+          <div className="nav-group">
+            <h3 className="nav-group-title">Profile</h3>
+            <button className={`tab-button ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => handleTabChange('settings')}>
+                <span>⚙️</span><span className="nav-text">Settings</span>
+            </button>
+          </div>
+        </nav>
+        <div className="user-profile">
+          <div className="user-info">
+            <span className="user-name nav-text">{user?.name || 'User'}</span>
+            <span className="user-email nav-text">{getUserEmail()}</span>
+          </div>
+          <button onClick={handleLogout} className="logout-button">
+            <span className="nav-text">Logout</span>
+          </button>
+        </div>
+      </aside>
+      <div className="content-wrapper">
         <main className="dashboard-content">
-           {error && <div className="error">{error}</div>}
-           {renderTabContent()}
+          {error && <div className="error">{error}</div>}
+          {renderTabContent()}
         </main>
       </div>
       <RationaleModal 

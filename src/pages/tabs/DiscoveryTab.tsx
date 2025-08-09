@@ -1,4 +1,5 @@
 import React from 'react';
+import './DiscoveryTab.css';
 
 const DiscoveryTab: React.FC = () => {
   return (
