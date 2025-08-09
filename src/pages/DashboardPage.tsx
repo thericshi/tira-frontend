@@ -433,9 +433,6 @@ const DashboardPage: React.FC = () => {
             <button className={`tab-button ${activeTab === 'market' ? 'active' : ''}`} onClick={() => handleTabChange('market')}>
                 <span>🌐</span><span className="nav-text">Market</span>
             </button>
-            <button className={`tab-button ${activeTab === 'discovery' ? 'active' : ''}`} onClick={() => handleTabChange('discovery')}>
-                <span>🔍</span><span className="nav-text">Discovery</span>
-            </button>
           </div>
           <div className="nav-group">
             <h3 className="nav-group-title">Profile</h3>
