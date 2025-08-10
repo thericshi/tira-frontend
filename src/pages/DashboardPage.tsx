@@ -9,6 +9,8 @@ import {
   NewsArticle,
   UserSettings,
   EmailNotifications,
+  // Note: The 'MarketAnalysis' type should be defined in your types file
+  MarketAnalysis, 
 } from '../types';
 import './Dashboard.css';
 import OverviewTab from './tabs/OverviewTab';
@@ -24,6 +26,8 @@ type MessageType = 'success' | 'error' | '';
 const DashboardPage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [marketData, setMarketData] = useState<MarketData | null>(null);
+  // --- NEW STATE FOR MARKET ANALYSIS ---
+  const [marketAnalysis, setMarketAnalysis] = useState<MarketAnalysis | null>(null);
   const [watchlist, setWatchlist] = useState<Stock[]>([]);
   const [topMovers, setTopMovers] = useState<Stock[]>([]);
   const [news, setNews] = useState<NewsArticle[]>([]);
@@ -76,6 +80,8 @@ const DashboardPage: React.FC = () => {
       const [
         userResponse,
         marketResponse,
+        // --- ADDED API CALL FOR ANALYSIS ---
+        analysisResponse,
         watchlistResponse,
         topMoversResponse,
         newsResponse,
@@ -83,6 +89,7 @@ const DashboardPage: React.FC = () => {
       ] = await Promise.all([
         userAPI.getProfile(),
         marketAPI.getOverview(),
+        marketAPI.getMarketAnalysis(), // <-- Fetch market analysis
         stocksAPI.getWatchlist(),
         stocksAPI.getTopMovers(),
         newsAPI.getMarketNews(),
@@ -91,6 +98,7 @@ const DashboardPage: React.FC = () => {
 
       setUser(userResponse);
       setMarketData(marketResponse);
+      setMarketAnalysis(analysisResponse); // <-- Set the state
       setWatchlist(watchlistResponse.stocks || []);
       setTopMovers(topMoversResponse.stocks || []);
       setNews(newsResponse.articles || []);
@@ -381,7 +389,8 @@ const DashboardPage: React.FC = () => {
           handleStockClick={handleStockClick}
         />;
       case 'market':
-        return <MarketTab topMovers={topMovers} news={news} />;
+        // --- PASS THE NEW PROP ---
+        return <MarketTab topMovers={topMovers} news={news} marketAnalysis={marketAnalysis} />;
       case 'discovery':
         return <DiscoveryTab />;
       case 'settings':

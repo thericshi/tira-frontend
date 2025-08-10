@@ -33,6 +33,13 @@ export interface MarketData {
   indices: MarketIndex[];
 }
 
+// --- NEW TYPE ADDED HERE ---
+export interface MarketAnalysis {
+  last_updated_utc: string; // This will be an ISO string date
+  score: number;
+  analysis: string;
+}
+
 // Stock Types
 export interface Stock {
   symbol: string;

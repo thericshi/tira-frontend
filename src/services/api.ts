@@ -8,7 +8,8 @@ import {
   TopMoversResponse,
   NewsResponse,
   UserSettings,
-  AuthResponse
+  AuthResponse,
+  MarketAnalysis
 } from '../types';
 
 // API Configuration
@@ -117,6 +118,8 @@ export const userAPI = {
 // Market API
 export const marketAPI = {
     getOverview: (): Promise<MarketData> => apiCall<MarketData>('/market/overview'),
+    // --- NEW FUNCTION ADDED ---
+    getMarketAnalysis: (): Promise<MarketAnalysis> => apiCall<MarketAnalysis>('/market/analysis'),
 };
 
 // Stocks API

@@ -618,6 +618,9 @@ body {
     --section-bg: rgba(255, 255, 255, 0.65);
     --section-border: rgba(229, 231, 235, 0.8);
     --item-bg: #ffffff;
+    --sentiment-bearish: #dc2626;
+    --sentiment-neutral: #f59e0b;
+    --sentiment-bullish: #059669;
 }
 
 [data-theme="dark"] body {
@@ -631,6 +634,9 @@ body {
     --section-bg: rgba(25, 35, 50, 0.6);
     --section-border: rgba(55, 65, 81, 0.7);
     --item-bg: #111827;
+    --sentiment-bearish: #ef4444;
+    --sentiment-neutral: #f9b500;
+    --sentiment-bullish: #22c55e;
 }
 
 /* --- THEME-SPECIFIC OVERRIDES --- */
