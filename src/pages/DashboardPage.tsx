@@ -4,13 +4,11 @@ import { userAPI, marketAPI, stocksAPI, newsAPI, authAPI } from '../services/api
 import { clearAuthData, getUserEmail } from '../utils/auth';
 import {
   User,
-  MarketData,
   Stock,
   NewsArticle,
   UserSettings,
   EmailNotifications,
-  // Note: The 'MarketAnalysis' type should be defined in your types file
-  MarketAnalysis, 
+  MarketAnalysis,
 } from '../types';
 import './Dashboard.css';
 import OverviewTab from './tabs/OverviewTab';
@@ -25,8 +23,6 @@ type MessageType = 'success' | 'error' | '';
 
 const DashboardPage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [marketData, setMarketData] = useState<MarketData | null>(null);
-  // --- NEW STATE FOR MARKET ANALYSIS ---
   const [marketAnalysis, setMarketAnalysis] = useState<MarketAnalysis | null>(null);
   const [watchlist, setWatchlist] = useState<Stock[]>([]);
   const [topMovers, setTopMovers] = useState<Stock[]>([]);
@@ -79,8 +75,6 @@ const DashboardPage: React.FC = () => {
 
       const [
         userResponse,
-        marketResponse,
-        // --- ADDED API CALL FOR ANALYSIS ---
         analysisResponse,
         watchlistResponse,
         topMoversResponse,
@@ -88,8 +82,7 @@ const DashboardPage: React.FC = () => {
         settingsResponse,
       ] = await Promise.all([
         userAPI.getProfile(),
-        marketAPI.getOverview(),
-        marketAPI.getMarketAnalysis(), // <-- Fetch market analysis
+        marketAPI.getMarketAnalysis(),
         stocksAPI.getWatchlist(),
         stocksAPI.getTopMovers(),
         newsAPI.getMarketNews(),
@@ -97,8 +90,7 @@ const DashboardPage: React.FC = () => {
       ]);
 
       setUser(userResponse);
-      setMarketData(marketResponse);
-      setMarketAnalysis(analysisResponse); // <-- Set the state
+      setMarketAnalysis(analysisResponse);
       setWatchlist(watchlistResponse.stocks || []);
       setTopMovers(topMoversResponse.stocks || []);
       setNews(newsResponse.articles || []);
@@ -168,10 +160,10 @@ const DashboardPage: React.FC = () => {
     try {
       setSettingsLoading(true);
       setSettingsMessage('');
-      
+
       const response = await authAPI.updateUserSettings(settings);
       const data = await response.json();
-      
+
       if (response.ok) {
         setSettingsMessage('Settings saved successfully!');
         setSettingsMessageType('success');
@@ -281,7 +273,6 @@ const DashboardPage: React.FC = () => {
     e.preventDefault();
     if (draggedIndex === null) return;
 
-    // Adjust dropIndex for items shifted by the drag
     const adjustedDropIndex = dropIndex > draggedIndex ? dropIndex -1 : dropIndex;
 
     if (draggedIndex === adjustedDropIndex) {
@@ -293,7 +284,7 @@ const DashboardPage: React.FC = () => {
     const newWatchlist = [...watchlist];
     const [draggedItem] = newWatchlist.splice(draggedIndex, 1);
     newWatchlist.splice(adjustedDropIndex, 0, draggedItem);
-    
+
     setWatchlist(newWatchlist);
     setDraggedIndex(null);
     setDragOverIndex(null);
@@ -304,7 +295,6 @@ const DashboardPage: React.FC = () => {
     } catch (error) {
       console.error('Failed to update watchlist order in backend:', error);
       setMessage('Failed to save watchlist order. Please try again.');
-      // Revert to original order on failure
       setWatchlist(watchlist);
       setTimeout(() => setMessage(''), 3000);
     }
@@ -373,7 +363,12 @@ const DashboardPage: React.FC = () => {
   const renderTabContent = (): JSX.Element | null => {
     switch (activeTab) {
       case 'overview':
-        return <OverviewTab user={user} marketData={marketData} watchlist={watchlist} news={news} handleTabChange={handleTabChange} />;
+        return <OverviewTab
+          user={user}
+          marketAnalysis={marketAnalysis}
+          watchlist={watchlist}
+          handleTabChange={handleTabChange}
+        />;
       case 'stock':
         return <StockTab
           watchlist={watchlist} topMovers={topMovers} message={message}
@@ -389,15 +384,14 @@ const DashboardPage: React.FC = () => {
           handleStockClick={handleStockClick}
         />;
       case 'market':
-        // --- PASS THE NEW PROP ---
         return <MarketTab topMovers={topMovers} news={news} marketAnalysis={marketAnalysis} />;
       case 'discovery':
         return <DiscoveryTab />;
       case 'settings':
-        return <SettingsTab 
-                  theme={theme} 
-                  handleThemeChange={handleThemeChange} 
-                  handleDeleteAccount={handleDeleteAccount} 
+        return <SettingsTab
+                  theme={theme}
+                  handleThemeChange={handleThemeChange}
+                  handleDeleteAccount={handleDeleteAccount}
                   isDemoAccount={isDemoAccount}
                   settings={settings}
                   handleSettingChange={handleSettingChange}
@@ -466,7 +460,7 @@ const DashboardPage: React.FC = () => {
           {renderTabContent()}
         </main>
       </div>
-      <RationaleModal 
+      <RationaleModal
         isOpen={isRationaleModalOpen}
         onClose={handleCloseRationaleModal}
         stock={selectedStockForRationale}

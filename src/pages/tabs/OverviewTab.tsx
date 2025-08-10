@@ -1,38 +1,64 @@
 import React from 'react';
-import { MarketData, Stock, NewsArticle, User } from '../../types';
+import { MarketAnalysis, Stock, User } from '../../types'; // NewsArticle type removed
 import './OverviewTab.css';
 
 interface OverviewTabProps {
   user: User | null;
-  marketData: MarketData | null;
+  marketAnalysis: MarketAnalysis | null;
   watchlist: Stock[];
-  news: NewsArticle[];
+  // The 'news' prop has been removed from this component
   handleTabChange: (tab: 'overview' | 'stock' | 'market' | 'discovery' | 'settings') => void;
 }
 
-const OverviewTab: React.FC<OverviewTabProps> = ({ user, marketData, watchlist, news, handleTabChange }) => {
+const OverviewTab: React.FC<OverviewTabProps> = ({ user, marketAnalysis, watchlist, handleTabChange }) => {
   const firstName = user?.name?.split(' ')[0];
-  
+  const [barWidth, setBarWidth] = React.useState(0);
+
+  React.useEffect(() => {
+    if (marketAnalysis) {
+      const timer = setTimeout(() => setBarWidth(marketAnalysis.score), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [marketAnalysis]);
+
+  const getSentimentColor = (score: number | undefined) => {
+    if (score === undefined) return 'var(--sentiment-neutral)';
+    if (score < 40) return 'var(--sentiment-bearish)';
+    if (score < 60) return 'var(--sentiment-neutral)';
+    return 'var(--sentiment-bullish)';
+  };
+
   return (
     <>
       <div className="overview-header">
         <h2>Hello {firstName || 'User'},</h2>
-        <p>Here is your dashboard overview for today</p>
+        <p>Here is your dashboard overview for today.</p>
       </div>
 
-      {/* Market Overview */}
+      {/* AI Sentiment Overview */}
       <section className="dashboard-section">
-        <h2>Market Overview</h2>
-        <div className="market-cards">
-          {marketData?.indices?.map((index, i) => (
-            <div key={i} className="market-card">
-              <h3>{index.name}</h3>
-              <div className="price">{index.value}</div>
-              <div className={`change ${index.change >= 0 ? 'positive' : 'negative'}`}>
-                {index.change >= 0 ? '+' : ''}{index.change} ({index.changePercent}%)
+        <div className="sentiment-overview">
+          <div className="sentiment-overview-info">
+            <h3>AI Market Sentiment</h3>
+            <p>Overall market outlook based on our AI analysis.</p>
+          </div>
+          <div className="sentiment-overview-gauge">
+            <div className="sentiment-overview-score" style={{ color: getSentimentColor(marketAnalysis?.score) }}>
+              {marketAnalysis?.score ?? '--'}
+              <span>/100</span>
+            </div>
+            <div className="sentiment-overview-bar-container">
+              <div className="sentiment-overview-bar">
+                <div
+                  className="sentiment-overview-bar-fill"
+                  style={{
+                    width: `${barWidth}%`,
+                    backgroundColor: getSentimentColor(marketAnalysis?.score)
+                  }}
+                />
               </div>
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
@@ -63,24 +89,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ user, marketData, watchlist, 
         </div>
       </section>
 
-      <div className="dashboard-grid">
-        {/* Market News */}
-        <section className="dashboard-section">
-          <h2>Market News</h2>
-          <div className="news-list">
-            {news.map((article, i) => (
-              <div key={i} className="news-item">
-                <h4>{article.title}</h4>
-                <p>{article.summary}</p>
-                <div className="news-meta">
-                  <span>{article.source}</span>
-                  <span>{article.publishedAt}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
+      {/* The Market News section and its surrounding grid have been removed from this component */}
 
       {/* Quick Actions */}
       <section className="dashboard-section">

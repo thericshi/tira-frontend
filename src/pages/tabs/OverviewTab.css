@@ -18,6 +18,72 @@
   line-height: 1.5;
 }
 
+/* AI Sentiment Overview Styles */
+.sentiment-overview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  background: var(--hover-bg);
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.sentiment-overview-info h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem 0;
+}
+
+.sentiment-overview-info p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 250px;
+}
+
+.sentiment-overview-gauge {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-grow: 1;
+  max-width: 400px;
+}
+
+.sentiment-overview-score {
+  font-size: 2.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: baseline;
+  transition: color 0.4s ease;
+}
+
+.sentiment-overview-score span {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-left: 0.25rem;
+}
+
+.sentiment-overview-bar-container {
+  width: 100%;
+}
+
+.sentiment-overview-bar {
+  width: 100%;
+  height: 10px;
+  background-color: var(--border-color);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.sentiment-overview-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 1.2s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.5s ease;
+}
 
 /* Quick Actions */
 .quick-actions {
@@ -70,18 +136,37 @@
     border-color: #D4AF37;
 }
 
+[data-theme="dark"] .sentiment-overview {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+[data-theme="dark"] .sentiment-overview-bar {
+  background-color: #374151;
+}
+
+
 /* Responsive */
 @media (max-width: 768px) {
     .quick-actions {
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-    
+
     .action-btn {
         padding: 1rem;
     }
-    
+
     .overview-header h2 {
         font-size: 1.75rem;
+    }
+
+    .sentiment-overview {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+    .sentiment-overview-gauge {
+      width: 100%;
     }
 }
