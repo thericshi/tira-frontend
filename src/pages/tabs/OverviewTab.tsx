@@ -1,12 +1,11 @@
 import React from 'react';
-import { MarketAnalysis, Stock, User } from '../../types'; // NewsArticle type removed
+import { MarketAnalysis, Stock, User } from '../../types';
 import './OverviewTab.css';
 
 interface OverviewTabProps {
   user: User | null;
   marketAnalysis: MarketAnalysis | null;
   watchlist: Stock[];
-  // The 'news' prop has been removed from this component
   handleTabChange: (tab: 'overview' | 'stock' | 'market' | 'discovery' | 'settings') => void;
 }
 
@@ -89,8 +88,6 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ user, marketAnalysis, watchli
         </div>
       </section>
 
-      {/* The Market News section and its surrounding grid have been removed from this component */}
-
       {/* Quick Actions */}
       <section className="dashboard-section">
         <h2>Quick Actions</h2>
@@ -105,19 +102,11 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ user, marketAnalysis, watchli
           <button
             className="action-btn"
             onClick={() => handleTabChange('market')}
-            style={{ background: '#D4AF37', color: 'white', border: '2px solid #D4AF37' }}
           >
             <span>📈</span>
             <div>
               <strong>Market Research</strong>
               <p>Access comprehensive market reports</p>
-            </div>
-          </button>
-          <button className="action-btn" onClick={() => handleTabChange('discovery')}>
-            <span>🔍</span>
-            <div>
-              <strong>Discover Stocks</strong>
-              <p>Find new investment opportunities</p>
             </div>
           </button>
           <button className="action-btn" onClick={() => handleTabChange('settings')}>

@@ -20,17 +20,11 @@ const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis }
     }
   }, [marketAnalysis]);
 
-  /**
-   * Converts an ISO date string to a human-readable "time ago" format.
-   * @param dateString The ISO date string to format.
-   * @returns A string like "5 minutes ago".
-   */
   const formatTimeAgo = (dateString: string): string => {
     if (!dateString) return 'a while ago';
     const date = new Date(dateString);
     const now = new Date();
     const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
     let interval = seconds / 31536000;
     if (interval > 1) return Math.floor(interval) + " years ago";
     interval = seconds / 2592000;
@@ -44,11 +38,6 @@ const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis }
     return Math.floor(seconds) + " seconds ago";
   };
 
-  /**
-   * Gets sentiment properties (a text label and color) based on the score.
-   * @param score A number from 0-100.
-   * @returns An object with a 'label' string and a 'color' CSS variable string.
-   */
   const getSentimentProperties = (score: number | null) => {
     if (score === null || score === undefined) {
       return { label: 'Neutral', color: 'var(--sentiment-neutral)' };
@@ -140,39 +129,7 @@ const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis }
         </div>
       </section>
 
-      <section className="dashboard-section">
-        <h2>Market Sectors</h2>
-        <div className="sector-grid">
-          <div className="sector-card">
-            <h3>Technology</h3>
-            <div className="sector-performance">
-              <span className="sector-change positive">+2.4%</span>
-              <span className="sector-trend">📈</span>
-            </div>
-          </div>
-          <div className="sector-card">
-            <h3>Healthcare</h3>
-            <div className="sector-performance">
-              <span className="sector-change positive">+1.8%</span>
-              <span className="sector-trend">📈</span>
-            </div>
-          </div>
-          <div className="sector-card">
-            <h3>Finance</h3>
-            <div className="sector-performance">
-              <span className="sector-change negative">-0.5%</span>
-              <span className="sector-trend">📉</span>
-            </div>
-          </div>
-          <div className="sector-card">
-            <h3>Energy</h3>
-            <div className="sector-performance">
-              <span className="sector-change positive">+3.2%</span>
-              <span className="sector-trend">📈</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* The Market Sectors section has been removed. */}
 
       <section className="dashboard-section">
         <h2>Market News</h2>
