@@ -95,7 +95,7 @@ const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis }
               </p>
             </div>
             <div className="analysis-text">
-              <h4>Qualitative Summary</h4>
+              <h4>Research Summary</h4>
               <p>{marketAnalysis.analysis}</p>
             </div>
           </div>

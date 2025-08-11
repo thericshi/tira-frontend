@@ -62,7 +62,7 @@ const LoginPage: React.FC = () => {
 
   const handleForgotPassword = (e: React.MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault();
-    alert('Password reset functionality will be implemented soon. Please contact support at hello@tira.ai');
+    alert('Password reset functionality will be implemented soon.');
   };
 
   return (

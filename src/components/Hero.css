@@ -54,6 +54,12 @@
   background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 10rem;
+  /* Removed fixed width from here to allow the grid to control it */
 }
 
 .stat h3 {
@@ -210,6 +216,10 @@
   .hero-stats {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+
+  .stat {
+    width: 100%; /* Ensures the stat card fills the width on mobile */
   }
   
   .hero-cta {

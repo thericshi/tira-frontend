@@ -35,12 +35,6 @@ const Header = () => {
           >
             Features
           </button>
-          <button 
-            onClick={() => handleSectionClick('value')}
-            className="nav-link"
-          >
-            Value
-          </button>
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
           <Link to="/login" className="cta-button">Log in</Link>

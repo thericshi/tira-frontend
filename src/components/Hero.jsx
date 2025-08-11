@@ -32,16 +32,16 @@ const Hero = () => {
           </p>
           <div className="hero-stats">
             <div className="stat">
-              <h3>2+ Hours</h3>
-              <p>Saved per stock research</p>
+              <h3>30+ minutes</h3>
+              <p>Saved researching per stock</p>
             </div>
             <div className="stat">
               <h3>&lt;1 Min</h3>
-              <p>Daily market context</p>
+              <p>Get daily market context</p>
             </div>
             <div className="stat">
               <h3>3-5</h3>
-              <p>Weekly opportunities surfaced</p>
+              <p>Weekly investment opportunities surfaced</p>
             </div>
           </div>
           <div className="hero-cta">
