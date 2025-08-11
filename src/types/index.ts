@@ -33,24 +33,24 @@ export interface MarketData {
   indices: MarketIndex[];
 }
 
-// --- NEW TYPE ADDED HERE ---
 export interface MarketAnalysis {
-  last_updated_utc: string; // This will be an ISO string date
+  last_updated_utc: string;
   score: number;
   analysis: string;
+  sources: [string, string][]; // A list of [title, url] tuples
 }
 
 // Stock Types
 export interface Stock {
   symbol: string;
   name: string;
-  price: string; // Backend sends as string like "$175.43"
-  change: string; // Backend sends as string like "+2.1%"
-  positive: boolean; // Backend sends positive flag
+  price: string;
+  change: string;
+  positive: boolean;
   signal?: 'BUY' | 'SELL' | 'HOLD';
-  score?: number; // Confidence score 0-100
-  sector?: string; // Stock sector
-  marketCap?: string; // Market cap category
+  score?: number;
+  sector?: string;
+  marketCap?: string;
 }
 
 export interface WatchlistResponse {
@@ -64,9 +64,8 @@ export interface TopMoversResponse {
 // News Types
 export interface NewsArticle {
   title: string;
-  summary: string;
   source: string;
-  publishedAt: string;
+  time: string;
   url?: string;
 }
 

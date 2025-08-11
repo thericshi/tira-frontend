@@ -11,13 +11,11 @@ interface MarketTabProps {
 const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis }) => {
   const [barWidth, setBarWidth] = React.useState(0);
 
-  // This effect triggers the fill animation when the component receives the analysis data.
-  // It ensures the bar is visually rendered at 0% width before the transition starts.
   React.useEffect(() => {
     if (marketAnalysis) {
       const timer = setTimeout(() => {
         setBarWidth(marketAnalysis.score);
-      }, 100); // A brief delay to allow for initial render
+      }, 100);
       return () => clearTimeout(timer);
     }
   }, [marketAnalysis]);
@@ -61,6 +59,15 @@ const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis }
   };
 
   const sentiment = getSentimentProperties(marketAnalysis?.score ?? null);
+
+  const NewsItemContent = ({ article }: { article: NewsArticle }) => (
+    <article className="news-item">
+      <h4>{article.title}</h4>
+      <div className="news-meta">
+        <span>{article.source}</span>
+      </div>
+    </article>
+  );
 
   return (
     <>
@@ -171,14 +178,21 @@ const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis }
         <h2>Market News</h2>
         <div className="news-list">
           {news.map((article, i) => (
-            <div key={i} className="news-item">
-              <h4>{article.title}</h4>
-              <p>{article.summary}</p>
-              <div className="news-meta">
-                <span>{article.source}</span>
-                <span>{article.publishedAt}</span>
+            article.url ? (
+              <a
+                key={i}
+                href={article.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="news-item-link"
+              >
+                <NewsItemContent article={article} />
+              </a>
+            ) : (
+              <div key={i} className="news-item-link non-clickable">
+                <NewsItemContent article={article} />
               </div>
-            </div>
+            )
           ))}
         </div>
       </section>

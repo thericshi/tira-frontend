@@ -1,11 +1,7 @@
-/**
- * Note: It's best practice to define these color variables in a global CSS file
- * (e.g., Dashboard.css or App.css) so they can be reused across components.
- */
 :root {
-    --sentiment-bearish: #D94D43; /* A deeper, more serious red */
-    --sentiment-neutral: #D4AF37; /* A rich gold/amber */
-    --sentiment-bullish: #0A8D6E; /* A strong, professional green */
+    --sentiment-bearish: #D94D43;
+    --sentiment-neutral: #D4AF37;
+    --sentiment-bullish: #0A8D6E;
 }
 
 [data-theme="dark"] {
@@ -35,7 +31,7 @@
 
 .sentiment-header {
     display: flex;
-    align-items: flex-end; /* Aligns score and label nicely */
+    align-items: flex-end;
     justify-content: center;
     gap: 0.75rem;
     margin-bottom: 1.5rem;
@@ -88,7 +84,6 @@
     height: 100%;
     border-radius: 7px;
     position: relative;
-    /* This transition creates the "filling up" animation */
     transition: width 1.2s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.5s ease;
 }
 
@@ -174,6 +169,58 @@
     font-size: 1.2rem;
 }
 
+/* News List Styles */
+.news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.news-item-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+}
+
+.news-item-link:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.news-item-link.non-clickable {
+    cursor: default;
+}
+
+.news-item-link.non-clickable:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.news-item {
+    padding: 1.5rem;
+    background: var(--item-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.news-item h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary, #000000);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.news-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-secondary, #999);
+}
+
+
 /* Dark Theme */
 [data-theme="dark"] .sentiment-indicator {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -197,6 +244,11 @@
     color: #f9fafb;
 }
 
+[data-theme="dark"] .news-item-link:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+
 /* Responsive */
 @media (max-width: 900px) {
     .market-analysis-container {
@@ -210,7 +262,7 @@
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-    
+
     .sector-card {
         padding: 1rem;
     }
