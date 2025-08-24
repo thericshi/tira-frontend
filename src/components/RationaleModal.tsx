@@ -23,7 +23,7 @@ const RationaleModal: React.FC<RationaleModalProps> = ({
 
   return (
     <div className="rationale-modal-overlay" onClick={onClose}>
-      <div className="rationale-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="rationale-modal interactive-card" onClick={(e) => e.stopPropagation()}>
         <button className="rationale-modal-close" onClick={onClose}>&times;</button>
         
         <div className="rationale-header">

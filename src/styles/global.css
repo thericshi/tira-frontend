@@ -160,3 +160,38 @@ body {
         font-size: 1rem;
     }
 }
+
+
+.interactive-card {
+    position: relative;
+}
+
+.interactive-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    
+    padding: 1px; 
+    
+    background: radial-gradient(
+        20rem circle at var(--mouse-x) var(--mouse-y),
+        rgba(216, 174, 35, 0.5),
+        transparent 80%
+    );
+    
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.interactive-card:not(:hover)::before {
+    opacity: 1;
+}

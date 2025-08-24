@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { isAuthenticated } from './utils/auth';
+import { useIllumination } from './utils/hooks';
 import { ProtectedRouteProps, PublicRouteProps } from './types';
 
 // Page Components
@@ -22,6 +23,8 @@ const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
 };
 
 const App: React.FC = () => {
+  useIllumination('.interactive-card');
+
   return (
     <div className="App">
       <Routes>

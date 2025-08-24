@@ -110,7 +110,7 @@ const SignupPage: React.FC = () => {
         ← Back to Home
       </Link>
 
-      <div className="auth-container">
+      <div className="auth-container interactive-card">
         <div className="auth-header">
           <h1>TIRA</h1>
           <p>Trading Intelligent Research Assistant</p>

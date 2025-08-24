@@ -1,3 +1,5 @@
+/* --- src/pages/tabs/StockTab.css --- */
+
 /* Search Container */
 .search-container {
     margin-bottom: 2rem;
@@ -15,7 +17,7 @@
 .search-results h3 {
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--text-primary, #000000);
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
@@ -77,11 +79,10 @@
     cursor: pointer;
 }
 
+/* Note: The main hover effect is now on stock-item in Dashboard.css */
+/* This can be removed or kept for specific overrides */
 .watchlist-container .stock-item.clickable:hover {
-    background: #f0f4f8;
-    border-color: #cbd5e0;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: var(--hover-bg);
 }
 
 .watchlist-container .stock-item.draggable {
@@ -94,7 +95,7 @@
 }
 
 .watchlist-container .stock-item.dragging {
-    opacity: 0.5;
+    opacity: 0.6;
     background: #e0e7ff;
     border-color: #a5b4fc;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
@@ -107,7 +108,7 @@
     left: 0.5rem;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--text-secondary, #999);
+    color: var(--text-secondary);
     font-size: 1.2rem;
     cursor: grab;
     padding: 0.5rem;
@@ -115,7 +116,7 @@
 }
 
 .watchlist-container .stock-item.draggable:hover .drag-handle {
-    color: #333;
+    color: var(--text-primary);
 }
 
 .watchlist-container .stock-item.draggable .stock-info {
@@ -177,9 +178,4 @@
     border: 2px dashed rgba(212, 175, 55, 0.5);
     border-radius: 8px;
     margin: 4px 0;
-}
-
-[data-theme="dark"] .stock-item.clickable:hover {
-    background: #374151;
-    border-color: #4b5563;
 }

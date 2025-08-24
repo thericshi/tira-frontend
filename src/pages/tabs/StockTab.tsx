@@ -66,7 +66,7 @@ const StockTab: React.FC<StockTabProps> = ({
   return (
     <>
       {/* Stock Search */}
-      <section className="dashboard-section">
+      <section className="dashboard-section interactive-card">
         <h2>Search Stocks</h2>
         <div className="search-container">
           <input
@@ -82,7 +82,7 @@ const StockTab: React.FC<StockTabProps> = ({
               <h3>Search Results</h3>
               <div className="stock-list">
                 {searchResults.map((stock, i) => (
-                  <div key={i} className="stock-item">
+                  <div key={i} className="stock-item clickable interactive-card" onClick={() => handleStockClick(stock)}>
                     <div className="stock-info">
                       <strong>{stock.symbol}</strong>
                       <span>{stock.name}</span>
@@ -97,10 +97,12 @@ const StockTab: React.FC<StockTabProps> = ({
                         </div>
                       </div>
                       <button
-                        onClick={() => isInWatchlist(stock.symbol)
-                          ? handleRemoveFromWatchlist(stock.symbol)
-                          : handleAddToWatchlist(stock.symbol)
-                        }
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent modal from opening when clicking button
+                          isInWatchlist(stock.symbol)
+                            ? handleRemoveFromWatchlist(stock.symbol)
+                            : handleAddToWatchlist(stock.symbol)
+                        }}
                         className={`btn ${isInWatchlist(stock.symbol) ? 'btn-secondary' : 'btn-primary'}`}
                       >
                         {isInWatchlist(stock.symbol) ? 'Remove' : 'Add'}
@@ -116,7 +118,7 @@ const StockTab: React.FC<StockTabProps> = ({
 
       <div className="dashboard-grid">
         {/* Watchlist */}
-        <section className="dashboard-section">
+        <section className="dashboard-section interactive-card">
           <h2>Your Watchlist</h2>
           <div className="watchlist-container">
             <div className="stock-list">
@@ -126,7 +128,7 @@ const StockTab: React.FC<StockTabProps> = ({
                   {watchlist.map((stock, i) => (
                     <React.Fragment key={stock.symbol}>
                       <div
-                        className={`stock-item clickable draggable ${draggedIndex === i ? 'dragging' : ''}`}
+                        className={`stock-item clickable draggable interactive-card ${draggedIndex === i ? 'dragging' : ''}`}
                         draggable
                         onDragStart={(e) => handleDragStart(e, i)}
                         onDragEnd={handleDragEnd}
@@ -172,11 +174,11 @@ const StockTab: React.FC<StockTabProps> = ({
         </section>
 
         {/* Top Movers */}
-        <section className="dashboard-section">
+        <section className="dashboard-section interactive-card">
           <h2>Top Movers</h2>
           <div className="stock-list">
             {topMovers.map((stock, i) => (
-              <div key={i} className="stock-item">
+              <div key={i} className="stock-item clickable interactive-card" onClick={() => handleStockClick(stock)}>
                 <div className="stock-info">
                   <strong>{stock.symbol}</strong>
                   <span>{stock.name}</span>

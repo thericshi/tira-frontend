@@ -46,7 +46,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
         </div>
       )}
 
-      <section className="settings-section">
+      <section className="settings-section interactive-card">
         <h2>📧 Email Notifications</h2>
         <p className="section-description">
           Manage your notification preferences for trading signals and market updates.
@@ -63,7 +63,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
               weeklyReport: { title: '📋 Weekly Report', desc: 'Weekly performance report' },
             };
             return (
-              <div className="notification-item" key={key}>
+              <div className="notification-item interactive-card" key={key}>
                 <div className="notification-info">
                   <h3>{labels[typedKey].title}</h3>
                   <p>{labels[typedKey].desc}</p>
@@ -82,7 +82,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
         </div>
       </section>
 
-      <section className="settings-section">
+      <section className="settings-section interactive-card">
         <h2>⚙️ Notification Preferences</h2>
         <div className="preference-item">
             <label htmlFor="notificationFrequency"><strong>Notification Frequency</strong></label>
@@ -114,7 +114,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
         </div>
       </section>
 
-      <section className="settings-section">
+      <section className="settings-section interactive-card">
         <h2>🎨 Display Preferences</h2>
         <div className="preference-item">
           <label><strong>Theme</strong></label>
@@ -130,7 +130,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({
         </div>
       </section>
 
-      <section className="settings-section">
+      <section className="settings-section interactive-card">
         <h2>Account Management</h2>
         <div className="settings-actions">
           <button

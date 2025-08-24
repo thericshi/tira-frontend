@@ -6,9 +6,10 @@ interface MarketTabProps {
   topMovers: Stock[];
   news: NewsArticle[];
   marketAnalysis: MarketAnalysis | null;
+  handleStockClick: (stock: Stock) => void;
 }
 
-const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis }) => {
+const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis, handleStockClick }) => {
   const [barWidth, setBarWidth] = React.useState(0);
 
   React.useEffect(() => {
@@ -50,7 +51,7 @@ const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis }
   const sentiment = getSentimentProperties(marketAnalysis?.score ?? null);
 
   const NewsItemContent = ({ article }: { article: NewsArticle }) => (
-    <article className="news-item">
+    <article className="news-item stock-item interactive-card">
       <h4>{article.title}</h4>
       <div className="news-meta">
         <span>{article.source}</span>
@@ -60,11 +61,11 @@ const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis }
 
   return (
     <>
-      <section className="dashboard-section">
+      <section className="dashboard-section interactive-card">
         <h2>AI Market Analysis</h2>
         {marketAnalysis ? (
           <div className="market-analysis-container">
-            <div className="sentiment-indicator">
+            <div className="sentiment-indicator interactive-card">
               <div className="sentiment-header">
                 <span className="sentiment-score-value" style={{ color: sentiment.color }}>
                   {marketAnalysis.score}
@@ -96,7 +97,7 @@ const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis }
             </div>
             <div className="analysis-text">
               <h4>Research Summary</h4>
-              <p>{marketAnalysis.analysis}</p>
+              <p className="interactive-card">{marketAnalysis.analysis}</p>
             </div>
           </div>
         ) : (
@@ -104,14 +105,14 @@ const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis }
         )}
       </section>
 
-      <section className="dashboard-section">
+      <section className="dashboard-section interactive-card">
         <h2>Top 5 Market Stocks</h2>
         <div className="stock-list">
           {topMovers
             .sort((a, b) => (b.score || 50) - (a.score || 50))
             .slice(0, 5)
             .map((stock, i) => (
-              <div key={i} className="stock-item">
+              <div key={i} className="stock-item clickable interactive-card" onClick={() => handleStockClick(stock)}>
                 <div className="stock-info">
                   <strong>{stock.symbol}</strong>
                   <span>{stock.name}</span>
@@ -129,9 +130,7 @@ const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis }
         </div>
       </section>
 
-      {/* The Market Sectors section has been removed. */}
-
-      <section className="dashboard-section">
+      <section className="dashboard-section interactive-card">
         <h2>Market News</h2>
         <div className="news-list">
           {news.map((article, i) => (

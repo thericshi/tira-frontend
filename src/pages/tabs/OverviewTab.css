@@ -1,12 +1,14 @@
+/* --- src/pages/tabs/OverviewTab.css --- */
+
 /* Overview Header */
 .overview-header {
-  margin-bottom: 2rem;
-  padding: 1rem;
+  margin-bottom: 2.5rem;
+  padding: 0.5rem;
 }
 
 .overview-header h2 {
-  font-size: 2.25rem;
-  font-weight: 700;
+  font-size: 2.5rem;
+  font-weight: 800;
   color: var(--text-primary);
   margin: 0 0 0.25rem 0;
 }
@@ -18,16 +20,17 @@
   line-height: 1.5;
 }
 
-/* AI Sentiment Overview Styles */
+/* AI Sentiment Overview */
 .sentiment-overview {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2rem;
-  background: var(--hover-bg);
-  padding: 1.5rem 2rem;
-  border-radius: 12px;
+  gap: 2.5rem;
+  background: var(--item-bg);
+  padding: 2rem;
+  border-radius: 16px;
   border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
 }
 
 .sentiment-overview-info h3 {
@@ -73,10 +76,11 @@
 
 .sentiment-overview-bar {
   width: 100%;
-  height: 10px;
-  background-color: var(--border-color);
-  border-radius: 5px;
+  height: 12px;
+  background-color: var(--hover-bg);
+  border-radius: 6px;
   overflow: hidden;
+  border: 1px solid var(--border-color);
 }
 
 .sentiment-overview-bar-fill {
@@ -99,16 +103,18 @@
     padding: 1.5rem;
     background: var(--item-bg);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: left;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
 }
 
 .action-btn:hover {
-    border-color: #D4AF37;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: var(--highlight-border);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -2px rgba(0,0,0,0.05);
+    background: var(--item-bg-hover);
 }
 
 .action-btn span {
@@ -117,34 +123,19 @@
 }
 
 .action-btn strong {
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 600;
-    color: var(--text-primary, #000000);
+    color: var(--text-primary);
     margin-bottom: 0.25rem;
     display: block;
 }
 
 .action-btn p {
-    font-size: 0.85rem;
-    color: var(--text-secondary, #666);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
     margin: 0;
     line-height: 1.4;
 }
-
-/* Dark Theme */
-[data-theme="dark"] .action-btn:hover {
-    border-color: #D4AF37;
-}
-
-[data-theme="dark"] .sentiment-overview {
-  background: #1f2937;
-  border-color: #374151;
-}
-
-[data-theme="dark"] .sentiment-overview-bar {
-  background-color: #374151;
-}
-
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -154,11 +145,11 @@
     }
 
     .action-btn {
-        padding: 1rem;
+        padding: 1.25rem;
     }
 
     .overview-header h2 {
-        font-size: 1.75rem;
+        font-size: 2rem;
     }
 
     .sentiment-overview {

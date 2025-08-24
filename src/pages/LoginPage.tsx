@@ -18,7 +18,6 @@ const LoginPage: React.FC = () => {
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    // Pre-fill email if coming from signup
     const emailParam = searchParams.get('email');
     if (emailParam) {
       setFormData(prev => ({ ...prev, email: emailParam }));
@@ -71,7 +70,7 @@ const LoginPage: React.FC = () => {
         ← Back to Home
       </Link>
 
-      <div className="auth-container">
+      <div className="auth-container interactive-card">
         <div className="auth-header">
           <h1>TIRA</h1>
           <p>Trading Intelligent Research Assistant</p>
@@ -126,7 +125,6 @@ const LoginPage: React.FC = () => {
             Don't have an account? <Link to="/signup">Sign up for free</Link>
           </div>
 
-          {/* Demo credentials hint */}
           <div className="demo-hint">
             <strong>Demo Credentials:</strong><br />
             Email: demo@tira.ai<br />

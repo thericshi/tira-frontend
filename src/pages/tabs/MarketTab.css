@@ -1,3 +1,5 @@
+/* --- src/pages/tabs/MarketTab.css --- */
+
 :root {
     --sentiment-bearish: #D94D43;
     --sentiment-neutral: #D4AF37;
@@ -5,11 +7,10 @@
 }
 
 [data-theme="dark"] {
-    --sentiment-bearish: #E57373;
-    --sentiment-neutral: #FFD54F;
-    --sentiment-bullish: #4DB6AC;
+    --sentiment-bearish: #f87171;
+    --sentiment-neutral: #fbbf24;
+    --sentiment-bullish: #4ade80;
 }
-
 
 /* Market Analysis Section */
 .market-analysis-container {
@@ -24,9 +25,9 @@
     flex-direction: column;
     background: var(--item-bg);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 1.5rem 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -2px rgba(0,0,0,0.05);
 }
 
 .sentiment-header {
@@ -42,7 +43,6 @@
     font-weight: 700;
     line-height: 1;
     transition: color 0.5s ease;
-    text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
 }
 
 .sentiment-score-label {
@@ -76,7 +76,7 @@
     background-color: var(--hover-bg);
     border-radius: 8px;
     border: 1px solid var(--border-color);
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
     overflow: hidden;
 }
 
@@ -115,100 +115,46 @@
     font-size: 1rem;
     line-height: 1.7;
     color: var(--text-secondary);
-    background: var(--hover-bg);
+    background: var(--item-bg);
     border: 1px solid var(--border-color);
     padding: 1.5rem;
-    border-radius: 12px;
+    border-radius: 16px;
     white-space: pre-wrap;
-}
-
-/* Market Sectors */
-.sector-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-}
-
-.sector-card {
-    background: #f8fafc;
-    padding: 1.5rem;
-    border-radius: 8px;
-    border: 1px solid #e5e7eb;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.sector-card h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-primary, #000000);
-    margin: 0;
-}
-
-.sector-performance {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.sector-change {
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.sector-change.positive {
-    color: #059669;
-}
-
-.sector-change.negative {
-    color: #dc2626;
-}
-
-.sector-trend {
-    font-size: 1.2rem;
 }
 
 /* News List Styles */
 .news-list {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .news-item-link {
     text-decoration: none;
     color: inherit;
     display: block;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 12px;
+    border-radius: 16px;
 }
 
-.news-item-link:hover {
+/* UPDATED: Hover effect only for clickable links */
+.news-item-link:not(.non-clickable):hover .news-item {
     transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-.news-item-link.non-clickable {
-    cursor: default;
-}
-
-.news-item-link.non-clickable:hover {
-    transform: none;
-    box-shadow: none;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    border-color: var(--highlight-border);
 }
 
 .news-item {
     padding: 1.5rem;
     background: var(--item-bg);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: 16px;
+    transition: all 0.3s ease;
 }
 
 .news-item h4 {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    color: var(--text-primary, #000000);
+    color: var(--text-primary);
     margin-bottom: 1rem;
     line-height: 1.4;
 }
@@ -216,54 +162,14 @@
 .news-meta {
     display: flex;
     justify-content: space-between;
-    font-size: 0.8rem;
-    color: var(--text-secondary, #999);
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
 }
-
-
-/* Dark Theme */
-[data-theme="dark"] .sentiment-indicator {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
-
-[data-theme="dark"] .sentiment-bar {
-    background-color: #111827;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-[data-theme="dark"] .analysis-text p {
-    background: #1f2937;
-}
-
-[data-theme="dark"] .sector-card {
-    background: #111827;
-    border-color: #374151;
-}
-
-[data-theme="dark"] .sector-card h3 {
-    color: #f9fafb;
-}
-
-[data-theme="dark"] .news-item-link:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-}
-
 
 /* Responsive */
 @media (max-width: 900px) {
     .market-analysis-container {
         grid-template-columns: 1fr;
         gap: 2rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .sector-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .sector-card {
-        padding: 1rem;
     }
 }

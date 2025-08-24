@@ -368,6 +368,7 @@ const DashboardPage: React.FC = () => {
           marketAnalysis={marketAnalysis}
           watchlist={watchlist}
           handleTabChange={handleTabChange}
+          handleStockClick={handleStockClick}
         />;
       case 'stock':
         return <StockTab
@@ -384,7 +385,12 @@ const DashboardPage: React.FC = () => {
           handleStockClick={handleStockClick}
         />;
       case 'market':
-        return <MarketTab topMovers={topMovers} news={news} marketAnalysis={marketAnalysis} />;
+        return <MarketTab 
+          topMovers={topMovers} 
+          news={news} 
+          marketAnalysis={marketAnalysis} 
+          handleStockClick={handleStockClick} 
+        />;
       case 'discovery':
         return <DiscoveryTab />;
       case 'settings':
@@ -417,7 +423,7 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div className="dashboard-layout">
-      <aside className="sidebar">
+      <aside className="sidebar interactive-card">
         <div className="sidebar-header">
           <Link to="/" className="logo">
             <h1>TIRA</h1>

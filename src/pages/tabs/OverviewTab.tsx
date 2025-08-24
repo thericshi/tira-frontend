@@ -7,9 +7,10 @@ interface OverviewTabProps {
   marketAnalysis: MarketAnalysis | null;
   watchlist: Stock[];
   handleTabChange: (tab: 'overview' | 'stock' | 'market' | 'discovery' | 'settings') => void;
+  handleStockClick: (stock: Stock) => void;
 }
 
-const OverviewTab: React.FC<OverviewTabProps> = ({ user, marketAnalysis, watchlist, handleTabChange }) => {
+const OverviewTab: React.FC<OverviewTabProps> = ({ user, marketAnalysis, watchlist, handleTabChange, handleStockClick }) => {
   const firstName = user?.name?.split(' ')[0];
   const [barWidth, setBarWidth] = React.useState(0);
 
@@ -35,7 +36,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ user, marketAnalysis, watchli
       </div>
 
       {/* AI Sentiment Overview */}
-      <section className="dashboard-section">
+      <section className="dashboard-section interactive-card">
         <div className="sentiment-overview">
           <div className="sentiment-overview-info">
             <h3>AI Market Sentiment</h3>
@@ -62,12 +63,12 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ user, marketAnalysis, watchli
       </section>
 
       {/* Top 5 Watchlist */}
-      <section className="dashboard-section">
+      <section className="dashboard-section interactive-card">
         <h2>Your Top 5 Watchlist</h2>
         <div className="stock-list">
           {watchlist.length > 0 ? (
             watchlist.slice(0, 5).map((stock, i) => (
-              <div key={i} className="stock-item">
+              <div key={i} className="stock-item clickable interactive-card" onClick={() => handleStockClick(stock)}>
                 <div className="stock-info">
                   <strong>{stock.symbol}</strong>
                   <span>{stock.name}</span>
@@ -89,10 +90,10 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ user, marketAnalysis, watchli
       </section>
 
       {/* Quick Actions */}
-      <section className="dashboard-section">
+      <section className="dashboard-section interactive-card">
         <h2>Quick Actions</h2>
         <div className="quick-actions">
-          <button className="action-btn" onClick={() => handleTabChange('stock')}>
+          <button className="action-btn interactive-card" onClick={() => handleTabChange('stock')}>
             <span>📊</span>
             <div>
               <strong>Analyze Stock</strong>
@@ -100,7 +101,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ user, marketAnalysis, watchli
             </div>
           </button>
           <button
-            className="action-btn"
+            className="action-btn interactive-card"
             onClick={() => handleTabChange('market')}
           >
             <span>📈</span>
@@ -109,7 +110,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ user, marketAnalysis, watchli
               <p>Access comprehensive market reports</p>
             </div>
           </button>
-          <button className="action-btn" onClick={() => handleTabChange('settings')}>
+          <button className="action-btn interactive-card" onClick={() => handleTabChange('settings')}>
             <span>⚙️</span>
             <div>
               <strong>Settings</strong>
