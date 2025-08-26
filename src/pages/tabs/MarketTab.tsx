@@ -23,9 +23,18 @@ const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis, 
 
   const formatTimeAgo = (dateString: string): string => {
     if (!dateString) return 'a while ago';
-    const date = new Date(dateString);
+    
+    let safeDateString = dateString;
+    if (!safeDateString.endsWith('Z')) {
+      safeDateString += 'Z';
+    }
+
+    const date = new Date(safeDateString);
     const now = new Date();
     const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+    
+    if (seconds < 30) return "just now";
+    
     let interval = seconds / 31536000;
     if (interval > 1) return Math.floor(interval) + " years ago";
     interval = seconds / 2592000;
@@ -55,6 +64,7 @@ const MarketTab: React.FC<MarketTabProps> = ({ topMovers, news, marketAnalysis, 
       <h4>{article.title}</h4>
       <div className="news-meta">
         <span>{article.source}</span>
+        <span>{article.time}</span>
       </div>
     </article>
   );
