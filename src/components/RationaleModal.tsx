@@ -1,5 +1,6 @@
 import React from 'react';
-import { Stock } from '../types';
+import { Stock, StockHistoryPoint } from '../types';
+import StockHistoryChart from './StockHistoryChart';
 import '../pages/Dashboard.css';
 
 interface RationaleModalProps {
@@ -9,6 +10,9 @@ interface RationaleModalProps {
   rationale: string | null;
   loading: boolean;
   error: string | null;
+  history: StockHistoryPoint[];
+  historyLoading: boolean;
+  historyError: string | null;
 }
 
 const RationaleModal: React.FC<RationaleModalProps> = ({
@@ -18,6 +22,9 @@ const RationaleModal: React.FC<RationaleModalProps> = ({
   rationale,
   loading,
   error,
+  history,
+  historyLoading,
+  historyError,
 }) => {
   if (!isOpen || !stock) return null;
 
@@ -51,6 +58,15 @@ const RationaleModal: React.FC<RationaleModalProps> = ({
                 {error && <p className="message error">{error}</p>}
                 {rationale && <p>{rationale}</p>}
             </div>
+          </div>
+
+          <div className="rationale-history-chart">
+            <h4>Historical Score</h4>
+            {historyLoading && <p>Loading history...</p>}
+            {historyError && <p className="message error">{historyError}</p>}
+            {!historyLoading && !historyError && (
+              <StockHistoryChart history={history} />
+            )}
           </div>
         </div>
       </div>

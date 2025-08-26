@@ -61,6 +61,18 @@ export interface TopMoversResponse {
   stocks: Stock[];
 }
 
+export interface StockHistoryPoint {
+  date_utc: string;
+  score: number;
+  signal: 'BUY' | 'SELL' | 'HOLD';
+  rationale: string;
+}
+
+export interface StockHistoryResponse {
+  history: StockHistoryPoint[];
+}
+
+
 // News Types
 export interface NewsArticle {
   title: string;

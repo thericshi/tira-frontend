@@ -9,7 +9,8 @@ import {
   NewsResponse,
   UserSettings,
   AuthResponse,
-  MarketAnalysis
+  MarketAnalysis,
+  StockHistoryResponse
 } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -132,7 +133,9 @@ export const stocksAPI = {
       body: JSON.stringify({ symbols })
     }),
   getStockRationale: (symbol: string) =>
-    apiCall(`/stocks/${symbol}/rationale`)
+    apiCall(`/stocks/${symbol}/rationale`),
+  getStockHistory: (symbol: string): Promise<StockHistoryResponse> =>
+    apiCall<StockHistoryResponse>(`/stocks/${symbol}/history`),
 };
 
 export const newsAPI = {

@@ -21,7 +21,7 @@ const MarketHistoryChart: React.FC<MarketHistoryChartProps> = ({ history }) => {
 
   const width = 600;
   const height = 200;
-  const padding = { top: 20, right: 20, bottom: 30, left: 30 };
+  const padding = { top: 20, right: 30, bottom: 30, left: 35 };
 
   const data = history.map(d => ({
     date: new Date(d.last_updated_utc.endsWith('Z') ? d.last_updated_utc : d.last_updated_utc + 'Z'),

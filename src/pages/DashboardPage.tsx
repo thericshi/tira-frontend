@@ -9,6 +9,7 @@ import {
   UserSettings,
   EmailNotifications,
   MarketAnalysis,
+  StockHistoryPoint,
 } from '../types';
 import './Dashboard.css';
 import OverviewTab from './tabs/OverviewTab';
@@ -46,6 +47,10 @@ const DashboardPage: React.FC = () => {
   const [rationale, setRationale] = useState<string | null>(null);
   const [rationaleLoading, setRationaleLoading] = useState(false);
   const [rationaleError, setRationaleError] = useState<string | null>(null);
+
+  const [stockHistory, setStockHistory] = useState<StockHistoryPoint[]>([]);
+  const [stockHistoryLoading, setStockHistoryLoading] = useState(false);
+  const [stockHistoryError, setStockHistoryError] = useState<string | null>(null);
 
   const [settings, setSettings] = useState<UserSettings | null>(null);
   const [settingsLoading, setSettingsLoading] = useState<boolean>(false);
@@ -109,19 +114,28 @@ const DashboardPage: React.FC = () => {
   const handleStockClick = async (stock: Stock) => {
     setSelectedStockForRationale(stock);
     setIsRationaleModalOpen(true);
+  
     setRationaleLoading(true);
     setRationaleError(null);
     setRationale(null);
-
-    try {
-      const response = await stocksAPI.getStockRationale(stock.symbol);
-      setRationale(response.rationale);
-    } catch (error) {
-      console.error('Failed to fetch rationale:', error);
-      setRationaleError('Could not load rationale for this stock.');
-    } finally {
-      setRationaleLoading(false);
-    }
+    stocksAPI.getStockRationale(stock.symbol)
+        .then(response => setRationale(response.rationale))
+        .catch(error => {
+            console.error('Failed to fetch rationale:', error);
+            setRationaleError('Could not load rationale for this stock.');
+        })
+        .finally(() => setRationaleLoading(false));
+  
+    setStockHistoryLoading(true);
+    setStockHistoryError(null);
+    setStockHistory([]);
+    stocksAPI.getStockHistory(stock.symbol)
+        .then(response => setStockHistory(response.history || []))
+        .catch(error => {
+            console.error('Failed to fetch stock history:', error);
+            setStockHistoryError('Could not load score history.');
+        })
+        .finally(() => setStockHistoryLoading(false));
   };
 
   const handleCloseRationaleModal = () => {
@@ -477,6 +491,9 @@ const DashboardPage: React.FC = () => {
         rationale={rationale}
         loading={rationaleLoading}
         error={rationaleError}
+        history={stockHistory}
+        historyLoading={stockHistoryLoading}
+        historyError={stockHistoryError}
       />
     </div>
   );
