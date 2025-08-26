@@ -24,6 +24,7 @@ type MessageType = 'success' | 'error' | '';
 const DashboardPage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [marketAnalysis, setMarketAnalysis] = useState<MarketAnalysis | null>(null);
+  const [marketHistory, setMarketHistory] = useState<MarketAnalysis[]>([]);
   const [watchlist, setWatchlist] = useState<Stock[]>([]);
   const [topMovers, setTopMovers] = useState<Stock[]>([]);
   const [news, setNews] = useState<NewsArticle[]>([]);
@@ -40,7 +41,6 @@ const DashboardPage: React.FC = () => {
   const [theme, setTheme] = useState<string>('light');
   const [isDemoAccount, setIsDemoAccount] = useState<boolean>(false);
 
-  // Rationale Modal State
   const [isRationaleModalOpen, setIsRationaleModalOpen] = useState(false);
   const [selectedStockForRationale, setSelectedStockForRationale] = useState<Stock | null>(null);
   const [rationale, setRationale] = useState<string | null>(null);
@@ -76,6 +76,7 @@ const DashboardPage: React.FC = () => {
       const [
         userResponse,
         analysisResponse,
+        historyResponse,
         watchlistResponse,
         topMoversResponse,
         newsResponse,
@@ -83,6 +84,7 @@ const DashboardPage: React.FC = () => {
       ] = await Promise.all([
         userAPI.getProfile(),
         marketAPI.getMarketAnalysis(),
+        marketAPI.getMarketHistory(),
         stocksAPI.getWatchlist(),
         stocksAPI.getTopMovers(),
         newsAPI.getMarketNews(),
@@ -91,6 +93,7 @@ const DashboardPage: React.FC = () => {
 
       setUser(userResponse);
       setMarketAnalysis(analysisResponse);
+      setMarketHistory(historyResponse || []);
       setWatchlist(watchlistResponse.stocks || []);
       setTopMovers(topMoversResponse.stocks || []);
       setNews(newsResponse.articles || []);
@@ -388,7 +391,8 @@ const DashboardPage: React.FC = () => {
         return <MarketTab 
           topMovers={topMovers} 
           news={news} 
-          marketAnalysis={marketAnalysis} 
+          marketAnalysis={marketAnalysis}
+          marketHistory={marketHistory}
           handleStockClick={handleStockClick} 
         />;
       case 'discovery':

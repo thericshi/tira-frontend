@@ -12,11 +12,8 @@ import {
   MarketAnalysis
 } from '../types';
 
-// Env var must be prefixed with VITE_ so Vite exposes it to the browser
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-// Generic API call helper
 export const apiCall = async <T = any>(
   endpoint: string,
   options: ApiOptions = {}
@@ -34,7 +31,6 @@ export const apiCall = async <T = any>(
     });
 
     if (response.status === 401) {
-      // Token expired, redirect to login
       localStorage.removeItem('authToken');
       localStorage.removeItem('userEmail');
       window.location.href = '/login';
@@ -48,7 +44,6 @@ export const apiCall = async <T = any>(
   }
 };
 
-// Authentication API
 export const authAPI = {
   login: (credentials: LoginCredentials) =>
     fetch(`${API_BASE_URL}/auth/login`, {
@@ -99,20 +94,19 @@ export const authAPI = {
   }
 };
 
-// User API
 export const userAPI = {
   getProfile: (): Promise<User> => apiCall<User>('/user/profile'),
   deleteAccount: (): Promise<{ message: string; success: boolean }> =>
     apiCall('/user/delete', { method: 'DELETE' })
 };
 
-// Market API
 export const marketAPI = {
   getMarketAnalysis: (): Promise<MarketAnalysis> =>
-    apiCall<MarketAnalysis>('/market/analysis')
+    apiCall<MarketAnalysis>('/market/analysis'),
+  getMarketHistory: (): Promise<MarketAnalysis[]> =>
+    apiCall<MarketAnalysis[]>('/market/history'),
 };
 
-// Stocks API
 export const stocksAPI = {
   getWatchlist: (): Promise<WatchlistResponse> =>
     apiCall<WatchlistResponse>('/stocks/watchlist'),
@@ -141,13 +135,11 @@ export const stocksAPI = {
     apiCall(`/stocks/${symbol}/rationale`)
 };
 
-// News API
 export const newsAPI = {
   getMarketNews: (): Promise<NewsResponse> =>
     apiCall<NewsResponse>('/news/market')
 };
 
-// Admin API
 export const adminAPI = {
   getUsers: (): Promise<User[]> => apiCall<User[]>('/admin/users')
 };

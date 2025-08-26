@@ -4,12 +4,16 @@
     --sentiment-bearish: #D94D43;
     --sentiment-neutral: #D4AF37;
     --sentiment-bullish: #0A8D6E;
+    --chart-line-color: #D4AF37;
+    --chart-grid-color: var(--border-color);
+    --chart-label-color: var(--text-tertiary);
 }
 
 [data-theme="dark"] {
     --sentiment-bearish: #f87171;
     --sentiment-neutral: #fbbf24;
     --sentiment-bullish: #4ade80;
+    --chart-line-color: #fbbf24;
 }
 
 /* Market Analysis Section */
@@ -104,22 +108,96 @@
     text-align: center;
 }
 
-.analysis-text h4 {
+.analysis-summary-box {
+    background: var(--item-bg);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    border-radius: 16px;
+}
+
+.analysis-summary-box h4 {
     font-size: 1.2rem;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
-.analysis-text p {
+.analysis-summary-box p {
     font-size: 1rem;
     line-height: 1.7;
     color: var(--text-secondary);
+    white-space: pre-wrap;
+    margin: 0;
+}
+
+/* --- Historical Score Chart --- */
+.market-chart-container {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
     background: var(--item-bg);
     border: 1px solid var(--border-color);
-    padding: 1.5rem;
     border-radius: 16px;
-    white-space: pre-wrap;
+}
+
+.market-chart-container h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+}
+
+.market-chart-svg {
+    width: 100%;
+    height: auto;
+    font-family: inherit;
+}
+
+.market-chart-svg .grid-line {
+    stroke: var(--chart-grid-color);
+    stroke-dasharray: 2, 3;
+}
+
+.market-chart-svg .axis-label {
+    font-size: 10px;
+    fill: var(--chart-label-color);
+}
+
+.market-chart-svg .score-line {
+    fill: none;
+    stroke: var(--chart-line-color);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.market-chart-svg .score-area {
+    opacity: 0.1;
+}
+
+.market-chart-svg .score-point {
+    fill: var(--chart-line-color);
+    stroke: var(--item-bg);
+    stroke-width: 2;
+    transition: r 0.2s ease;
+}
+
+.market-chart-svg .score-point:hover {
+    r: 6;
+}
+
+.chart-tooltip {
+    position: absolute;
+    background: var(--sidebar-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    white-space: nowrap;
 }
 
 /* News List Styles */
@@ -136,7 +214,6 @@
     border-radius: 16px;
 }
 
-/* UPDATED: Hover effect only for clickable links */
 .news-item-link:not(.non-clickable):hover .news-item {
     transform: translateY(-4px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
@@ -149,21 +226,35 @@
     border: 1px solid var(--border-color);
     border-radius: 16px;
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.news-item h4 {
+.news-title {
     font-size: 1.1rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin-bottom: 1rem;
     line-height: 1.4;
+    margin: 0 0 1rem 0; /* Add margin-bottom */
 }
 
 .news-meta {
-    display: flex;
-    justify-content: space-between;
     font-size: 0.85rem;
     color: var(--text-tertiary);
+    text-align: left; /* Align to the left */
+}
+
+.news-source {
+    display: inline-block;
+    background-color: var(--hover-bg);
+    color: var(--text-secondary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: 1px solid var(--border-color);
 }
 
 /* Responsive */
