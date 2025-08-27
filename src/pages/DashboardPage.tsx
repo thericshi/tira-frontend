@@ -42,6 +42,8 @@ const DashboardPage: React.FC = () => {
   const [theme, setTheme] = useState<string>('light');
   const [isDemoAccount, setIsDemoAccount] = useState<boolean>(false);
 
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState<boolean>(false);
+
   const [isRationaleModalOpen, setIsRationaleModalOpen] = useState(false);
   const [selectedStockForRationale, setSelectedStockForRationale] = useState<Stock | null>(null);
   const [rationale, setRationale] = useState<string | null>(null);
@@ -191,7 +193,6 @@ const DashboardPage: React.FC = () => {
     } catch (error) {
       console.error('Error saving settings:', error);
       setSettingsMessage('Connection error. Please try again.');
-      setSettingsMessageType('error');
     } finally {
       setSettingsLoading(false);
       setTimeout(() => setSettingsMessage(''), 3000);
@@ -209,6 +210,7 @@ const DashboardPage: React.FC = () => {
       loadAllStocks();
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsMobileNavOpen(false);
   };
 
   const loadAllStocks = async (): Promise<void> => {
@@ -440,7 +442,7 @@ const DashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="dashboard-layout">
+    <div className={`dashboard-layout ${isMobileNavOpen ? 'mobile-nav-open' : ''}`}>
       <aside className="sidebar interactive-card">
         <div className="sidebar-header">
           <Link to="/" className="logo">
@@ -478,7 +480,19 @@ const DashboardPage: React.FC = () => {
           </button>
         </div>
       </aside>
+
+      <div className="mobile-nav-overlay" onClick={() => setIsMobileNavOpen(false)}></div>
+      
       <div className="content-wrapper">
+        <header className="mobile-header">
+            <Link to="/" className="mobile-logo">T</Link>
+            <button className="menu-toggle" onClick={() => setIsMobileNavOpen(true)} aria-label="Open navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </header>
+
         <main className="dashboard-content">
           {error && <div className="error">{error}</div>}
           {renderTabContent()}
