@@ -53,6 +53,7 @@
     font-weight: 800;
     margin: 0;
     letter-spacing: -1px;
+    color: #111827; /* Default color for light mode */
 }
 
 .sidebar-header .logo .nav-text {
@@ -257,7 +258,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     display: flex;
@@ -272,7 +273,7 @@
     background: var(--sidebar-bg);
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
-    padding: 0;
+    padding: 2.5rem;
     border-radius: 20px;
     width: 90%;
     max-width: 600px;
@@ -282,37 +283,24 @@
     opacity: 0;
     animation: slideInUp 0.4s 0.1s forwards;
     border: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    max-height: 85vh;
 }
 
-.rationale-modal-close { position: absolute; top: 1rem; right: 1rem; background: var(--hover-bg); color: var(--text-secondary); border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.5rem; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; line-height: 1; z-index: 20; }
+.rationale-modal-close { position: absolute; top: 1rem; right: 1rem; background: var(--hover-bg); color: var(--text-secondary); border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.5rem; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; line-height: 1; }
 .rationale-modal-close:hover { background: var(--border-color); color: var(--text-primary); transform: rotate(90deg); }
 
-.rationale-header { display: flex; align-items: center; gap: 1rem; border-bottom: 1px solid var(--border-color); padding: 2rem 2.5rem 1.5rem 2.5rem; flex-shrink: 0; }
+.rationale-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem; }
 .rationale-header h2 { font-size: 2rem; font-weight: 800; margin: 0; color: var(--text-primary); }
 .rationale-header .stock-name { color: var(--text-secondary); font-weight: 500; margin-top: 0.25rem; }
 .rationale-header .stock-signal { margin-left: auto; }
 
-.rationale-content { overflow-y: auto; padding: 1.5rem 2.5rem 2.5rem 2.5rem; }
 .rationale-content .score-display { text-align: center; margin-bottom: 2rem; }
 .rationale-content .score-label { font-size: 1rem; color: var(--text-secondary); font-weight: 500; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
 .rationale-content .score-value { font-size: 3.5rem; font-weight: 800; color: var(--text-primary); line-height: 1; }
 .rationale-content .score-total { font-size: 1.5rem; font-weight: 500; color: var(--text-tertiary); }
 
 .rationale-text-container h4 { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; }
-.rationale-text { font-size: 1.05rem; line-height: 1.7; color: var(--text-secondary); background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color); }
+.rationale-text { font-size: 1.05rem; line-height: 1.7; color: var(--text-secondary); background: var(--hover-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color); max-height: 200px; overflow-y: auto; }
 .rationale-text p { margin: 0; }
-
-.rationale-history-chart { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
-.rationale-history-chart h4 { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; }
-.rationale-history-chart .grid-line, .rationale-modal .grid-line { stroke: var(--chart-grid-color); stroke-dasharray: 2, 3; }
-.rationale-history-chart .axis-label, .rationale-modal .axis-label { font-size: 10px; fill: var(--chart-label-color); }
-.rationale-history-chart .score-line, .rationale-modal .score-line { fill: none; stroke: var(--chart-line-color); stroke-width: 2; stroke-linecap: round; }
-.rationale-history-chart .score-area, .rationale-modal .score-area { opacity: 0.1; }
-.rationale-history-chart .score-point, .rationale-modal .score-point { fill: var(--chart-line-color); stroke: var(--item-bg); stroke-width: 1.5; transition: r 0.2s ease; }
-.rationale-history-chart .score-point:hover, .rationale-modal .score-point:hover { r: 5; }
 
 /* Forms */
 .form-input, .form-select { width: 100%; padding: 0.85rem 1rem; border: 1px solid var(--border-color); border-radius: 10px; font-size: 1rem; background: var(--item-bg); color: var(--text-primary); transition: all 0.3s ease; }
@@ -352,6 +340,33 @@
 /* --- RESPONSIVE STYLES --- */
 @media (max-width: 768px) {
     .sidebar { width: 72px; padding: 1.5rem 0.5rem; }
+
+    .sidebar-header {
+        padding-left: 0;
+        padding-right: 0;
+        display: flex;
+        justify-content: center;
+    }
+    .sidebar-header .logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: var(--hover-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--text-primary);
+    }
+    .sidebar-header .logo::before {
+        content: 'T';
+    }
+    .sidebar-header .logo h1,
+    .sidebar-header .logo .nav-text {
+        display: none;
+    }
+    
     .sidebar .tab-button { justify-content: center; }
     .sidebar .logout-button { font-size: 0; }
     .sidebar .logout-button::before { content: "➡️"; font-size: 1.25rem; }
@@ -410,6 +425,12 @@ body {
 
 /* --- THEME-SPECIFIC OVERRIDES --- */
 [data-theme="dark"] .sidebar { background: var(--sidebar-bg); }
+
+[data-theme="dark"] .sidebar-header .logo h1,
+[data-theme="dark"] .sidebar-header .logo {
+    color: var(--text-primary);
+}
+
 [data-theme="dark"] .tab-button.active { color: #ffffff; background: #D4AF37; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2); }
 [data-theme="dark"] .signal.buy { background: #064e3b; color: #a7f3d0; border-color: #34d399; }
 [data-theme="dark"] .signal.sell { background: #7f1d1d; color: #fecaca; border-color: #ef4444; }
