@@ -31,7 +31,7 @@ const ContactPage: React.FC = () => {
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
-  const [openFAQ, setOpenFAQ] = useState<number | null>(0); // Default open first FAQ
+  const [openFAQ, setOpenFAQ] = useState<number | null>(null); 
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>): void => {
     setFormData({

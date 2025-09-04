@@ -1,47 +1,29 @@
-/* -- Modern & Professional Limitations Section -- */
+/* --- Limitations & Risk Section --- */
 
 .limitations {
   padding: 6rem 0;
-  background-color: #f7f8fa; /* A clean, slightly off-white background */
-}
-
-/* Centralized header for the section */
-.section-header {
-  text-align: center;
-  margin-bottom: 4rem;
-}
-
-.section-header h2 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #1a202c; /* Darker, more professional text color */
-  margin-bottom: 0.5rem;
-}
-
-.section-header p {
-  font-size: 1.1rem;
-  color: #4a5568; /* Softer text color for subtitle */
-  max-width: 600px;
-  margin: 0 auto;
+  background-color: #0a0a0a;
+  border-top: 1px solid rgba(212, 175, 55, 0.2);
+  color: #f0f0f0;
 }
 
 /* Main Risk Card */
 .risk-control-card {
-  background: #ffffff;
+  background: #000000;
   padding: 3rem;
-  border-radius: 16px; /* Slightly softer radius */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 10px 20px rgba(0, 0, 0, 0.04);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   text-align: center;
   margin-bottom: 4rem;
-  border: 1px solid #e2e8f0; /* Subtle border */
+  border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .risk-icon-wrapper {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  background-color: #edf2f7;
-  color: #2c5282; /* Professional blue */
+  background-color: rgba(212, 175, 55, 0.1);
+  color: #D4AF37;
   border-radius: 50%;
   width: 80px;
   height: 80px;
@@ -56,20 +38,20 @@
 .risk-control-card h3 {
   font-size: 2rem;
   font-weight: 700;
-  color: #1a202c;
+  color: #fff;
   margin-bottom: 1rem;
 }
 
 .risk-control-card p {
   font-size: 1.1rem;
   line-height: 1.7;
-  color: #4a5568;
+  color: #a0a0a0;
   max-width: 750px;
   margin: 0 auto;
 }
 
 .risk-control-card p strong {
-  color: #2c5282;
+  color: #D4AF37;
   font-weight: 600;
 }
 
@@ -83,32 +65,34 @@
 }
 
 .focus-section {
-  background: #ffffff;
+  background: #000000;
   padding: 2.5rem;
   border-radius: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02), 0 10px 20px rgba(0, 0, 0, 0.02);
-  border: 1px solid #e2e8f0;
+  border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .focus-section h4 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1a202c;
+  color: #fff;
   margin-bottom: 2rem;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
   padding-bottom: 1rem;
 }
 
 .focus-list {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem; /* Increased gap for better spacing */
+  gap: 1.5rem;
 }
 
 .focus-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Align icon to the top of the text */
   gap: 1.25rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .focus-icon {
@@ -119,22 +103,17 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  margin-top: 4px; /* Align icon with text */
 }
 
 .focus-icon.supported {
-  background-color: #ebf8ff; /* Light blue */
-  color: #2c5282; /* Strong blue */
+  background-color: rgba(212, 175, 55, 0.1);
+  color: #D4AF37;
 }
 
 .focus-icon.not-supported {
-  background-color: #f7fafc; /* Very light gray */
-  color: #718096; /* Muted gray */
-}
-
-.focus-icon .icon-check,
-.focus-icon .icon-block {
-  width: 20px;
-  height: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #888;
 }
 
 .focus-details {
@@ -143,34 +122,33 @@
 }
 
 .focus-details strong {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: #2d3748;
+  color: #e0e0e0;
   line-height: 1.4;
+  margin-bottom: 0.25rem;
 }
 
 .focus-details span {
-  font-size: 0.9rem;
-  color: #718096;
+  font-size: 0.85rem;
+  color: #999;
   line-height: 1.5;
 }
 
-
 /* Disclaimer Section */
 .disclaimer {
-  background: #ffffff;
-  color: #4a5568;
+  background: transparent;
+  color: #a0a0a0;
   padding: 2.5rem;
   border-radius: 16px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid rgba(212, 175, 55, 0.2);
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 }
 
 .disclaimer h4 {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #2d3748;
+  color: #e0e0e0;
   margin-bottom: 0.75rem;
 }
 
@@ -182,7 +160,7 @@
 }
 
 
-/* Mobile Responsive Adjustments */
+/* --- Mobile Responsive Adjustments --- */
 @media (max-width: 992px) {
   .focus-grid {
     grid-template-columns: 1fr;
@@ -194,19 +172,12 @@
   .limitations {
     padding: 4rem 0;
   }
-
-  .section-header h2 {
-    font-size: 2rem;
-  }
-  
   .risk-control-card, .focus-section, .disclaimer {
     padding: 2rem;
   }
-
   .risk-control-card h3 {
     font-size: 1.6rem;
   }
-
   .risk-control-card p, .disclaimer p {
     font-size: 1rem;
   }
@@ -216,20 +187,13 @@
   .limitations {
     padding: 3rem 0;
   }
-
-  .section-header h2 {
-    font-size: 1.8rem;
-  }
-
   .risk-control-card, .focus-section, .disclaimer {
     padding: 1.5rem;
   }
-  
   .risk-icon-wrapper {
     width: 64px;
     height: 64px;
   }
-
   .shield-icon {
     width: 32px;
     height: 32px;

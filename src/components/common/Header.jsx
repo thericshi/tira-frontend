@@ -38,7 +38,15 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Hamburger button */}
+          {/* -- Desktop Navigation -- */}
+          <nav className="desktop-nav">
+            <button onClick={() => handleSectionClick('features')} className="nav-link">Features</button>
+            <Link to="/about" className="nav-link">About</Link>
+            <Link to="/contact" className="nav-link">Contact</Link>
+            <Link to="/login" className="cta-button">Log in</Link>
+          </nav>
+
+          {/* -- Mobile Hamburger Button -- */}
           <button 
             className="menu-toggle-mobile" 
             onClick={() => setIsMenuOpen(!isMenuOpen)} 

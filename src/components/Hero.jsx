@@ -1,11 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { isAuthenticated } from '../utils/auth';
 import './Hero.css';
 
 const Hero = () => {
   const handleStartResearch = () => {
-    // If user is authenticated, go to dashboard, otherwise go to signup
     if (isAuthenticated()) {
       window.location.href = '/dashboard';
     } else {
@@ -14,7 +12,6 @@ const Hero = () => {
   };
 
   const handleLearnMore = () => {
-    // Scroll to features section
     const featuresSection = document.getElementById('features');
     if (featuresSection) {
       featuresSection.scrollIntoView({ behavior: 'smooth' });
@@ -25,30 +22,14 @@ const Hero = () => {
     <section className="hero">
       <div className="container">
         <div className="hero-content">
-          <h1>Your Indispensable Trading Research Assistant</h1>
+          <h1>AI-Powered Research. Smarter Trades.</h1>
           <p className="hero-subtitle">
-            TIRA delivers comprehensive market research, stock analysis, and investment opportunities 
-            that save you hours of manual research and help you make better trading decisions.
+            TIRA delivers comprehensive market research and stock analysis that saves you hours of manual work, helping you make confident, data-driven trading decisions.
           </p>
-          <div className="hero-stats">
-            <div className="stat">
-              <h3>30+ minutes</h3>
-              <p>Saved researching per stock</p>
-            </div>
-            <div className="stat">
-              <h3>&lt;1 Min</h3>
-              <p>Get daily market context</p>
-            </div>
-            <div className="stat">
-              <h3>3-5</h3>
-              <p>Weekly investment opportunities surfaced</p>
-            </div>
-          </div>
           <div className="hero-cta">
             <button 
               className="primary-button" 
               onClick={handleStartResearch}
-              style={{background: '#D4AF37', borderColor: '#D4AF37'}}
             >
               Start Your Research
             </button>
@@ -60,20 +41,30 @@ const Hero = () => {
         <div className="hero-visual">
           <div className="dashboard-preview">
             <div className="chart-placeholder">
-              <div className="chart-bars">
-                <div className="bar" style={{height: '60%'}}></div>
-                <div className="bar" style={{height: '80%'}}></div>
-                <div className="bar" style={{height: '45%'}}></div>
-                <div className="bar" style={{height: '90%'}}></div>
-                <div className="bar" style={{height: '70%'}}></div>
-              </div>
+               <svg viewBox="0 0 200 100" preserveAspectRatio="none">
+                <path className="path" d="M0,50 Q25,80 50,50 T100,60 T150,40 T200,70" fill="none" />
+              </svg>
             </div>
             <div className="signal-indicator">
-              <span className="signal buy">BUY</span>
+              <span className="signal buy">BUY SIGNAL</span>
               <span className="confidence">High Confidence</span>
             </div>
           </div>
         </div>
+         <div className="hero-stats">
+            <div className="stat">
+              <h3>30+ min</h3>
+              <p>Saved per stock</p>
+            </div>
+            <div className="stat">
+              <h3>&lt; 1 min</h3>
+              <p>Daily market context</p>
+            </div>
+            <div className="stat">
+              <h3>3-5</h3>
+              <p>Weekly opportunities</p>
+            </div>
+          </div>
       </div>
     </section>
   );

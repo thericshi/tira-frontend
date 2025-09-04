@@ -46,21 +46,21 @@ const Limitations = () => {
                 <div className="focus-icon supported"><CheckIcon /></div>
                 <div className="focus-details">
                   <strong>Mid-term Positions</strong>
-                  <span>Weeks to months — where research creates opportunity.</span>
+                  <span>Weeks to months, where research creates opportunity</span>
                 </div>
               </div>
               <div className="focus-item">
                 <div className="focus-icon supported"><CheckIcon /></div>
                 <div className="focus-details">
                   <strong>Long-term Investments</strong>
-                  <span>Months to years — powered by fundamental analysis.</span>
+                  <span>Months to years, powered by fundamental analysis</span>
                 </div>
               </div>
               <div className="focus-item">
                 <div className="focus-icon supported"><CheckIcon /></div>
                 <div className="focus-details">
                   <strong>Equity & Stock Analysis</strong>
-                  <span>Comprehensive research and data-driven insights.</span>
+                  <span>Comprehensive research and data-driven insights</span>
                 </div>
               </div>
             </div>
@@ -73,21 +73,21 @@ const Limitations = () => {
                 <div className="focus-icon not-supported"><BlockIcon /></div>
                 <div className="focus-details">
                   <strong>Day Trading</strong>
-                  <span>High-frequency trading requires different tools.</span>
+                  <span>High-frequency trading requires different tools</span>
                 </div>
               </div>
               <div className="focus-item">
                 <div className="focus-icon not-supported"><BlockIcon /></div>
                 <div className="focus-details">
                   <strong>Cryptocurrency</strong>
-                  <span>These volatile markets require specialized analysis.</span>
+                  <span>These volatile markets require specialized analysis</span>
                 </div>
               </div>
               <div className="focus-item">
                 <div className="focus-icon not-supported"><BlockIcon /></div>
                 <div className="focus-details">
                   <strong>Complex Derivatives</strong>
-                  <span>Options and futures require dedicated platforms.</span>
+                  <span>Options and futures require dedicated platforms</span>
                 </div>
               </div>
             </div>
@@ -98,7 +98,7 @@ const Limitations = () => {
           <h4>Your Investment Responsibility</h4>
           <p>
             TIRA is a powerful research tool that informs your investments. 
-            However, all final trading decisions remains your responsibility. Past performance is not an indicator of future results.
+            However, all final trading decisions remains your responsibility. Past performance is not always an indicator of future results.
           </p>
         </div>
       </div>

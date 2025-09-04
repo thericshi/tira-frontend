@@ -1,63 +1,45 @@
+/* --- Value Proposition Section --- */
 .value-proposition {
-  background-color: #f8fafc;
-  padding: 6rem 0;
-  color: #1a1a1a;
-}
-
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 5rem;
-}
-
-.section-header h2 {
-  font-size: 2.8rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.section-header p {
-  font-size: 1.2rem;
-  color: #666;
-  max-width: 800px;
-  margin: 0 auto;
-  line-height: 1.6;
+  background-color: #000000;
+  padding: 8rem 0;
+  color: #f0f0f0;
+  border-top: 1px solid rgba(212, 175, 55, 0.2);
+  overflow: hidden;
 }
 
 .value-list {
   display: flex;
   flex-direction: column;
-  gap: 6rem; /* Increased gap between rows */
+  gap: 8rem;
 }
 
 .value-row {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6rem;
+  gap: 4rem;
+}
+
+/* Alternate row layout for visual rhythm */
+.value-row:nth-child(even) {
+  flex-direction: row-reverse;
 }
 
 .value-text {
   flex: 1;
   max-width: 500px;
-  text-align: left; /* Default text alignment */
 }
 
 .value-text h3 {
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  color: #fff;
 }
 
 .value-text p {
   font-size: 1.2rem;
   line-height: 1.7;
-  color: #555;
+  color: #a0a0a0;
 }
 
 .value-icon-container {
@@ -65,56 +47,102 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 500px;
+  min-height: 300px;
 }
 
-.animated-icon {
-  font-size: 6rem;
+/* --- Abstract Visuals --- */
+.abstract-visual {
+  width: 200px;
+  height: 200px;
+  position: relative;
 }
 
-/* Responsive Design */
+/* Visual 1: Time */
+.visual-time .circle {
+  width: 100%;
+  height: 100%;
+  border: 2px solid #D4AF37;
+  border-radius: 50%;
+  position: absolute;
+  opacity: 0.5;
+}
+.visual-time .hand {
+  width: 2px;
+  height: 80px;
+  background: #D4AF37;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform-origin: bottom center;
+  animation: tick 5s linear infinite;
+}
+
+@keyframes tick {
+  to { transform: rotate(360deg); }
+}
+
+/* Visual 2: Signal */
+.visual-signal .bar {
+  width: 30px;
+  background: rgba(212, 175, 55, 0.1);
+  position: absolute;
+  bottom: 0;
+  border-radius: 4px 4px 0 0;
+  animation: rise 2s ease-in-out infinite alternate;
+}
+.visual-signal .bar:nth-child(1) { left: 0; height: 100px; animation-delay: 0s; }
+.visual-signal .bar:nth-child(2) { left: 40px; height: 150px; animation-delay: 0.2s; }
+.visual-signal .bar:nth-child(3) { left: 80px; height: 120px; background: #D4AF37; animation-delay: 0.4s; box-shadow: 0 0 15px #D4AF37; }
+.visual-signal .bar:nth-child(4) { left: 120px; height: 180px; animation-delay: 0.6s; }
+
+@keyframes rise {
+  from { transform: scaleY(0.2); }
+  to { transform: scaleY(1); }
+}
+
+/* Visual 3: Data */
+.visual-data .node {
+  width: 15px;
+  height: 15px;
+  background: #D4AF37;
+  border-radius: 50%;
+  position: absolute;
+  animation: pulse 1.5s infinite alternate;
+}
+.visual-data .node:nth-child(1) { top: 0; left: 50%; }
+.visual-data .node:nth-child(2) { top: 50%; left: 0; animation-delay: 0.3s; }
+.visual-data .node:nth-child(3) { top: 50%; right: 0; animation-delay: 0.6s; }
+.visual-data .node:nth-child(4) { bottom: 0; left: 50%; background: #FFD700; animation-delay: 0.9s; }
+
+@keyframes pulse {
+  from { transform: scale(0.8); opacity: 0.7; }
+  to { transform: scale(1.2); opacity: 1; }
+}
+
+
+/* --- Responsive Design --- */
 @media (max-width: 992px) {
-  .value-row {
-    flex-direction: column; /* Stack items vertically */
-    text-align: center; /* Center text for stacked view */
+  .value-row, .value-row:nth-child(even) {
+    flex-direction: column;
+    text-align: center;
     gap: 2rem;
   }
 
-  /* Ensure the icon appears above the text on mobile for all rows */
-  .value-row > .value-text {
-    order: 2; 
-  }
-  .value-row > .value-icon-container {
-    order: 1;
-  }
-  
   .value-text {
-    text-align: center; /* Center text on mobile */
+    max-width: 100%;
   }
 }
 
 @media (max-width: 768px) {
   .value-proposition {
-    padding: 4rem 0;
-  }
-  
-  .section-header h2 {
-    font-size: 2.2rem;
-  }
-  
-  .section-header p {
-    font-size: 1.1rem;
+    padding: 6rem 0;
   }
   
   .value-text h3 {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 
   .value-text p {
     font-size: 1.1rem;
-  }
-
-  .animated-icon {
-    font-size: 6rem;
   }
 }
